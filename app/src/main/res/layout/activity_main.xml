@@ -7,16 +7,14 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/question"
-        android:layout_alignParentBottom="false"
-        android:baselineAligned="false">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/answer_1"
             android:id="@+id/answer_1"
@@ -25,7 +23,7 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/answer_2"
             android:id="@+id/answer_2"
@@ -34,7 +32,7 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/answer_3"
             android:id="@+id/answer_3"
@@ -43,7 +41,7 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/answer_4"
             android:id="@+id/answer_4"
@@ -59,8 +57,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/question"
         android:id="@+id/question"
-        android:layout_below="@+id/question_title"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/space"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -82,5 +81,12 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="right" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/question_title"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/space" />
 
 </RelativeLayout>
