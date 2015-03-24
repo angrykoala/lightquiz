@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:minWidth="100dp">
 
         <Button
             android:layout_width="fill_parent"
@@ -20,7 +21,8 @@
             android:id="@+id/answer_1"
             android:layout_above="@+id/answer_2"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="answerClicked" />
 
         <Button
             android:layout_width="fill_parent"
@@ -29,7 +31,8 @@
             android:id="@+id/answer_2"
             android:layout_above="@+id/answer_3"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="answerClicked" />
 
         <Button
             android:layout_width="fill_parent"
@@ -38,7 +41,8 @@
             android:id="@+id/answer_3"
             android:layout_above="@+id/answer_4"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="answerClicked" />
 
         <Button
             android:layout_width="fill_parent"
@@ -47,7 +51,8 @@
             android:id="@+id/answer_4"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="answerClicked" />
 
     </LinearLayout>
 
@@ -80,7 +85,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        android:onClick="exitButtonClicked" />
 
     <Space
         android:layout_width="match_parent"
@@ -88,5 +94,23 @@
         android:layout_below="@+id/question_title"
         android:layout_centerHorizontal="true"
         android:id="@+id/space" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/correct_img"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/correct_answer"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wrong_img"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/wrong_answer"
+        android:visibility="invisible" />
 
 </RelativeLayout>
