@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">LightQuiz</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="question_title">Question X</string>
+    <string name="question">This is supposed to be an interesting question</string>
+    <string name="answer_1">First Answer</string>
+    <string name="answer_2">Second Answer</string>
+    <string name="answer_3">Third Answer</string>
+    <string name="answer_4">Fourth Answer</string>
+    <string name="exit_button">Exit</string>
     <string name="action_settings">Settings</string>
 </resources>
