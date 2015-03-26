@@ -1,0 +1,36 @@
+﻿<LightQuiz
+    version="0.1"
+    max_dif="10">
+    <Q
+        c_ans="2"
+        dif="2">Name of Spain Capital
+        <A>Barcelona</A>
+        <A>Madrid</A>
+        <A>Granada</A>
+        <A>New York</A>
+    </Q>
+    <Q
+        c_ans="4"
+        dif="5">A female android is a ...
+        <A>Androida</A>
+        <A>Androidres</A>
+        <A>F-android</A>
+        <A>Gynoid</A>
+    </Q>
+    <Q
+        c_ans="1"
+        dif="6">Which is bigger?
+        <A>Exabyte</A>
+        <A>Megabyte</A>
+        <A>Petabyte</A>
+        <A>Terabyte</A>
+    </Q>
+    <Q
+        c_ans="3"
+        dif="5">A Koala-Bear is a ...
+        <A>Bear</A>
+        <A>Lazy fish</A>
+        <A>Marsupial</A>
+        <A>Feline</A>
+    </Q>
+</LightQuiz>
