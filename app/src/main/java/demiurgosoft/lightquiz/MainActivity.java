@@ -38,37 +38,17 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         correctImg=(ImageView) findViewById(R.id.correct_img);
         wrongImg=(ImageView) findViewById(R.id.wrong_img);
-        hideAnswerImage();
         try {
             load_xml_questions();
         } catch (IOException | XmlPullParserException e) {
             e.printStackTrace();
         }
-        nextQuestion(generator.getQuestion());
+        nextQuestion();
     }
 
     private void load_xml_questions() throws IOException, XmlPullParserException {
         XmlResourceParser xmlq = getResources().getXml(R.xml.questions);
         generator.readXML(xmlq);
-       /* int eventType = xmlq.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            if (eventType == XmlPullParser.START_TAG) {
-                Log.d("tag:","["+xmlq.getName()+"]");
-                if(xmlq.getName().equals("Q")) {
-                    Question q=new Question();
-                    q.readXML(xmlq);
-                    Log.d("question",q.text);
-                    Log.d("question",q.answers[0]);
-                    if(q.validQuestion()) Log.d("question","valid");
-                    else  Log.d("question","invalid");
-                    nextQuestion(q);
-
-                }
-            } else if (eventType == XmlPullParser.TEXT) {
-                Log.d("text", xmlq.getText());
-            } else if (eventType == XmlPullParser.END_TAG) {
-                Log.d("End tag", xmlq.getName());
-            }*/
         xmlq.close();
     }
 
@@ -115,14 +95,27 @@ public class MainActivity extends ActionBarActivity {
         }
         if(correctAnswer==answ) correctAnswer();
         else wrongAnswer();
-
+        //new Timer().schedule(new TimerTask() {
+        //    @Override
+        //    public void run() {
+        nextQuestion();
+        //    }
+        //}, 800);
 
     }
     public void exitButtonClicked(View view){
 
     }
 
-    private void nextQuestion(Question quest) {
+    private void nextQuestion() {
+        if (generator.size() == 0) try {
+            load_xml_questions();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        Question quest = generator.getQuestion();
         questionNumber++;
         if (!quest.validQuestion()) throw new RuntimeException("Invalid Question");
         this.correctAnswer = quest.correctAnswer;
@@ -138,6 +131,7 @@ public class MainActivity extends ActionBarActivity {
         TextView questionText=(TextView) findViewById(R.id.question);
         questionTitle.setText("Question"+questionNumber);
         questionText.setText(quest.text);
+        hideAnswerImage();
     }
     private void correctAnswer(){
         points+=10;

@@ -33,4 +33,20 @@
         <A>Marsupial</A>
         <A>Feline</A>
     </Q>
+    <Q
+        c_ans="3"
+        dif="3">2+3*2=
+        <A>10</A>
+        <A>7</A>
+        <A>8</A>
+        <A>4</A>
+    </Q>
+    <Q
+        c_ans="1"
+        dif="4">Android was developed by
+        <A>Google</A>
+        <A>Android Inc.</A>
+        <A>Apple</A>
+        <A>Oracle</A>
+    </Q>
 </LightQuiz>

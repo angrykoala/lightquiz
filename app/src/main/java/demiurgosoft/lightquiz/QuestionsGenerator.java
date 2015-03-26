@@ -1,5 +1,7 @@
 package demiurgosoft.lightquiz;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -26,12 +28,18 @@ public class QuestionsGenerator {
     public boolean addQuestion(Question q) {
         boolean b = q.validQuestion();
         if (b) questionsList.add(q);
+        Log.d("Add question", String.valueOf(b));
         return b;
     }
 
     public Question getQuestion() {
         if (size() == 0) throw new RuntimeException("QuestionGenerator empty");
-        else return questionsList.get(randomValue());
+        else {
+            int randvalue = randomValue();
+            Question res = questionsList.get(randvalue);
+            questionsList.remove(randvalue);
+            return res;
+        }
     }
 
     public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {

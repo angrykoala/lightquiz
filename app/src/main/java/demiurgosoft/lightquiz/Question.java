@@ -35,9 +35,8 @@ public class Question {
         parser.require(XmlPullParser.START_TAG, null, "Q");
         int current = 0; //current answer to read
         int eventType = parser.getEventType();
-        boolean endQuestion = false;
         String currentTag = parser.getName();
-        while (!endQuestion) {
+        while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 currentTag = parser.getName();
                 if (currentTag.equals("Q")) {
@@ -53,7 +52,7 @@ public class Question {
                     this.text = parser.getText();
                 }
             } else if (eventType == XmlPullParser.END_TAG) {
-                if (parser.getName().equals("Q")) endQuestion = true;
+                if (parser.getName().equals("Q")) break;
             }
             eventType = parser.next();
         }
