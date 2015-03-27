@@ -2,6 +2,7 @@ package demiurgosoft.lightquiz;
 
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         } catch (IOException | XmlPullParserException e) {
             e.printStackTrace();
         }
-        nextQuestion();
+        setQuestion();
     }
 
     private void load_xml_questions() throws IOException, XmlPullParserException {
@@ -76,45 +77,35 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void answerClicked(View view) {
-        int answ=-1;
+        int answ = -1;
+        buttonsActive(false);
         switch (view.getId()) {
             case R.id.answer_1:
-                answ=1;
+                answ = 1;
                 break;
             case R.id.answer_2:
-                answ=2;
+                answ = 2;
                 break;
             case R.id.answer_3:
-                answ=3;
+                answ = 3;
                 break;
             case R.id.answer_4:
-                answ=4;
+                answ = 4;
                 break;
             default:
                 throw new RuntimeException("Unknown button ID");
         }
-        if(correctAnswer==answ) correctAnswer();
+        if (correctAnswer == answ) correctAnswer();
         else wrongAnswer();
-        //new Timer().schedule(new TimerTask() {
-        //    @Override
-        //    public void run() {
         nextQuestion();
-        //    }
-        //}, 800);
-
     }
+
     public void exitButtonClicked(View view){
-
+        finish();
     }
 
-    private void nextQuestion() {
-        if (generator.size() == 0) try {
-            load_xml_questions();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
+    private void setQuestion() {
+        buttonsActive(true);
         Question quest = generator.getQuestion();
         questionNumber++;
         if (!quest.validQuestion()) throw new RuntimeException("Invalid Question");
@@ -129,9 +120,20 @@ public class MainActivity extends ActionBarActivity {
         b4.setText(quest.answers[3]);
         TextView questionTitle=(TextView) findViewById(R.id.question_title);
         TextView questionText=(TextView) findViewById(R.id.question);
-        questionTitle.setText("Question"+questionNumber);
+        questionTitle.setText("Question " + questionNumber);
         questionText.setText(quest.text);
         hideAnswerImage();
+    }
+
+    private void nextQuestion() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setQuestion();
+            }
+        }, 800);
+
     }
     private void correctAnswer(){
         points+=10;
@@ -145,5 +147,17 @@ public class MainActivity extends ActionBarActivity {
     private void hideAnswerImage(){
     correctImg.setVisibility(View.INVISIBLE);
     wrongImg.setVisibility(View.INVISIBLE);
+    }
+
+    private void buttonsActive(boolean b) {
+        Button b1 = (Button) findViewById(R.id.answer_1);
+        Button b2 = (Button) findViewById(R.id.answer_2);
+        Button b3 = (Button) findViewById(R.id.answer_3);
+        Button b4 = (Button) findViewById(R.id.answer_4);
+        b1.setClickable(b);
+        b2.setClickable(b);
+        b3.setClickable(b);
+        b4.setClickable(b);
+
     }
 }

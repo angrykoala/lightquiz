@@ -14,6 +14,7 @@ import java.util.Random;
  */
 public class QuestionsGenerator {
     ArrayList<Question> questionsList;
+    ArrayList<Question> leftQuestions;
     Random randSelector;
 
     public QuestionsGenerator() {
@@ -28,16 +29,16 @@ public class QuestionsGenerator {
     public boolean addQuestion(Question q) {
         boolean b = q.validQuestion();
         if (b) questionsList.add(q);
-        Log.d("Add question", String.valueOf(b));
         return b;
     }
 
     public Question getQuestion() {
         if (size() == 0) throw new RuntimeException("QuestionGenerator empty");
         else {
+            if (leftQuestions.size() == 0) restartQuestions();
             int randvalue = randomValue();
-            Question res = questionsList.get(randvalue);
-            questionsList.remove(randvalue);
+            Question res = leftQuestions.get(randvalue);
+            leftQuestions.remove(randvalue);
             return res;
         }
     }
@@ -57,9 +58,15 @@ public class QuestionsGenerator {
             }
             eventType = parser.next();
         }
+        restartQuestions();
     }
 
     private int randomValue() {
-        return randSelector.nextInt(size());
+        return randSelector.nextInt(leftQuestions.size());
+    }
+
+    private void restartQuestions() {
+        leftQuestions = (ArrayList<Question>) questionsList.clone();
+        Log.d("questions", String.valueOf(leftQuestions.size()));
     }
 }
