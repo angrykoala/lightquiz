@@ -1,7 +1,5 @@
 package demiurgosoft.lightquiz;
 
-import android.util.Log;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -39,6 +37,7 @@ public class QuestionsGenerator {
             int randvalue = randomValue();
             Question res = leftQuestions.get(randvalue);
             leftQuestions.remove(randvalue);
+            res.randomize();
             return res;
         }
     }
@@ -67,6 +66,6 @@ public class QuestionsGenerator {
 
     private void restartQuestions() {
         leftQuestions = (ArrayList<Question>) questionsList.clone();
-        Log.d("questions", String.valueOf(leftQuestions.size()));
+        //Log.d("questions", String.valueOf(leftQuestions.size()));
     }
 }
