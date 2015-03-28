@@ -1,5 +1,7 @@
 package demiurgosoft.lightquiz;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -8,28 +10,38 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by andrew on 3/25/15.
+ * Created by demiurgosoft - 3/25/15
  */
 public class QuestionsGenerator {
-    ArrayList<Question> questionsList;
-    ArrayList<Question> leftQuestions;
-    Random randSelector;
+    private ArrayList<Question> questionsList;
+    private ArrayList<Question> leftQuestions;
+    private Random randSelector;
 
-    public QuestionsGenerator() {
+    private boolean ready;
+    private XmlPullParser parser;
+
+    public QuestionsGenerator(XmlPullParser parser) {
         questionsList = new ArrayList<>();
         randSelector = new Random();
+        leftQuestions = new ArrayList<>();
+        this.parser = parser;
+        try {
+            readXML();
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public boolean isReady() {
+        return ready;
+    }
     public int size() {
         return questionsList.size();
     }
 
-    public boolean addQuestion(Question q) {
-        boolean b = q.validQuestion();
-        if (b) questionsList.add(q);
-        return b;
+    public void clearLeftQuestons() {
+        leftQuestions.clear();
     }
-
     public Question getQuestion() {
         if (size() == 0) throw new RuntimeException("QuestionGenerator empty");
         else {
@@ -42,8 +54,15 @@ public class QuestionsGenerator {
         }
     }
 
-    public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
-        // parser.require(XmlPullParser.START_TAG, null, "LightQuiz");
+    private boolean addQuestion(Question q) {
+        boolean b = q.validQuestion();
+        if (b) questionsList.add(q);
+        return b;
+    }
+
+    private void readXML() throws XmlPullParserException, IOException {
+        Log.d("Questions generator", "read XML");
+        ready = false;
         int eventType = parser.getEventType();
         String currentTag;
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -57,7 +76,8 @@ public class QuestionsGenerator {
             }
             eventType = parser.next();
         }
-        restartQuestions();
+        //restartQuestions();
+        ready = true;
     }
 
     private int randomValue() {
@@ -65,7 +85,8 @@ public class QuestionsGenerator {
     }
 
     private void restartQuestions() {
+        leftQuestions.clear();
         leftQuestions = (ArrayList<Question>) questionsList.clone();
-        //Log.d("questions", String.valueOf(leftQuestions.size()));
+        Log.d("Questions generator", "restart");
     }
 }

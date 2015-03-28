@@ -1,50 +1,43 @@
-﻿<LightQuiz
-    version="0.1"
-    max_dif="10">
-    <Q
-        c_ans="2"
-        dif="2">Name of Spain Capital
+﻿<!--
+Each questions is tagged with <Q> value, dif attribute is the questions difficulty
+Each answer inside a Questions has <A> value, the correct answer is tagged with <CA>
+If two <CA> in same questions, last one will be used
+if more than 4 <A> in a questions, only 4 first will be used
+if less than 4 answers for questions or no CA, the question will NOT be loaded
+-->
+<LightQuiz version="0.1">
+    <Q>Name of Spain Capital
         <A>Barcelona</A>
-        <A>Madrid</A>
+        <CA>Madrid</CA>
         <A>Granada</A>
         <A>New York</A>
     </Q>
-    <Q
-        c_ans="4"
-        dif="5">A female android is a ...
+    <Q>A female android is a ...
         <A>Androida</A>
         <A>Androidres</A>
         <A>F-android</A>
-        <A>Gynoid</A>
+        <CA>Gynoid</CA>
     </Q>
-    <Q
-        c_ans="1"
-        dif="6">Which is bigger?
-        <A>Exabyte</A>
+    <Q>Which is bigger?
+        <CA>Exabyte</CA>
         <A>Megabyte</A>
         <A>Petabyte</A>
         <A>Terabyte</A>
     </Q>
-    <Q
-        c_ans="3"
-        dif="5">A Koala-Bear is a ...
+    <Q>A Koala-Bear is a ...
         <A>Bear</A>
         <A>Lazy fish</A>
-        <A>Marsupial</A>
+        <CA>Marsupial</CA>
         <A>Feline</A>
     </Q>
-    <Q
-        c_ans="3"
-        dif="3">2+3*2=
+    <Q>2+3*2=
         <A>10</A>
         <A>7</A>
-        <A>8</A>
+        <CA>8</CA>
         <A>4</A>
     </Q>
-    <Q
-        c_ans="1"
-        dif="4">Android was developed by
-        <A>Google</A>
+    <Q>Android was developed by
+        <CA>Google</CA>
         <A>Android Inc.</A>
         <A>Apple</A>
         <A>Oracle</A>

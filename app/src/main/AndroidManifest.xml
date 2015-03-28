@@ -11,12 +11,27 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".PlayGame"
+            android:label="@string/title_activity_play_game"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="demiurgosoft.lightquiz.MainActivity" />
+        </activity>
+        <activity
+            android:name=".GameResult"
+            android:label="@string/title_activity_game_result"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="demiurgosoft.lightquiz.MainActivity" />
         </activity>
     </application>
 
