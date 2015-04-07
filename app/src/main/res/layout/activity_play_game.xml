@@ -9,6 +9,7 @@
     tools:context=".demiurgosoft.lightquiz.PlayGame">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -63,41 +64,19 @@
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/space"
         android:text="@string/question"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/question_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/exit_button"
-        android:layout_toStartOf="@+id/exit_button"
-        android:text="@string/question_title"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="40dp" />
-
-    <Button
-        android:id="@+id/exit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="right"
-        android:onClick="exitButtonClicked"
-        android:text="@string/exit_button" />
 
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:layout_below="@+id/question_title"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/points_text" />
 
     <ImageView
         android:id="@+id/correct_img"
@@ -105,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/correct_answer"
+        android:src="@drawable/correct_answer"
         android:visibility="invisible" />
 
     <ImageView
@@ -114,8 +93,32 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/wrong_answer"
+        android:src="@drawable/wrong_answer"
         android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/points_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/score"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#CCCC00"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/life_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/life"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ee2222"
+        android:textSize="30sp" />
 
 </RelativeLayout>
 
