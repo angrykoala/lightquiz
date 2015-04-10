@@ -7,49 +7,31 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
 
 /**
  * Created by demiurgosoft - 3/25/15
  */
 public class QuestionsGenerator {
     private ArrayList<Question> questionsList;
-    private ArrayList<Question> leftQuestions;
-    private Random randSelector;
 
     private boolean ready;
-    private XmlPullParser parser;
 
-    public QuestionsGenerator(XmlPullParser parser) {
+    public QuestionsGenerator(XmlPullParser parser) throws IOException, XmlPullParserException {
         questionsList = new ArrayList<>();
-        randSelector = new Random();
-        leftQuestions = new ArrayList<>();
-        this.parser = parser;
-        try {
-            readXML();
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
+        loadQuestions(parser);
     }
 
     public boolean isReady() {
         return ready;
     }
-    public int size() {
-        return questionsList.size();
-    }
-
-    public void clearLeftQuestons() {
-        leftQuestions.clear();
-    }
     public Question getQuestion() {
-        if (size() == 0) throw new RuntimeException("QuestionGenerator empty");
+        if (questionsList.isEmpty()) throw new RuntimeException("QuestionGenerator empty");
         else {
-            if (leftQuestions.size() == 0) restartQuestions();
-            int randvalue = randomValue();
-            Question res = leftQuestions.get(randvalue);
-            leftQuestions.remove(randvalue);
+            Question res = questionsList.get(0);
+            questionsList.remove(0);
             res.randomize();
+            if (questionsList.isEmpty()) ready = false;
             return res;
         }
     }
@@ -60,9 +42,8 @@ public class QuestionsGenerator {
         return b;
     }
 
-    private void readXML() throws XmlPullParserException, IOException {
+    private void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
         Log.d("Questions generator", "read XML");
-        ready = false;
         int eventType = parser.getEventType();
         String currentTag;
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -76,17 +57,11 @@ public class QuestionsGenerator {
             }
             eventType = parser.next();
         }
-        //restartQuestions();
+    }
+
+    public void loadQuestions(XmlPullParser parser) throws XmlPullParserException, IOException {
+        readXML(parser);
+        Collections.shuffle(questionsList);
         ready = true;
-    }
-
-    private int randomValue() {
-        return randSelector.nextInt(leftQuestions.size());
-    }
-
-    private void restartQuestions() {
-        leftQuestions.clear();
-        leftQuestions = (ArrayList<Question>) questionsList.clone();
-        Log.d("Questions generator", "restart");
     }
 }
