@@ -30,6 +30,7 @@ public class PlayGame extends ActionBarActivity {
     private ImageView wrongImg;
     private TextView pointsText;
     private TextView lifeText;
+    private TextView countdownText;
     private Button[] answerButtons = new Button[4];
     private View gameOverLayout;
 
@@ -132,10 +133,15 @@ public class PlayGame extends ActionBarActivity {
 
         questionText.setText(quest.text);
         hideAnswerImage();
-        countdown = new CountDownTimer(questionSeconds * 1000, 1000) {
+        countdown = new CountDownTimer(questionSeconds * 1000, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
-                //timer stuff
+                countdownText.setText(Integer.toString((int) (millisUntilFinished / 1000) + 1));
+            /* if(millisUntilFinished/1000 == 1) {
+                 wrongAnswer();
+                 updateTexts();
+                 nextQuestion();
+             }*/
             }
 
             @Override
@@ -199,6 +205,7 @@ public class PlayGame extends ActionBarActivity {
         wrongImg = (ImageView) findViewById(R.id.wrong_img);
         pointsText = (TextView) findViewById(R.id.points_text);
         lifeText = (TextView) findViewById(R.id.life_text);
+        countdownText = (TextView) findViewById(R.id.countdown_text);
 
         answerButtons[0] = (Button) findViewById(R.id.answer_1);
         answerButtons[1] = (Button) findViewById(R.id.answer_2);
@@ -213,6 +220,7 @@ public class PlayGame extends ActionBarActivity {
     private void updateTexts() {
         lifeText.setText("Life:" + lives);
         pointsText.setText("Score:" + points);
+        countdownText.setText("");
     }
 
     private void gameOver() {
