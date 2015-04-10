@@ -29,4 +29,5 @@
         android:text="@string/highscore"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40sp" />
+
 </RelativeLayout>

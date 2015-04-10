@@ -2,6 +2,7 @@ package demiurgosoft.lightquiz;
 
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class PlayGame extends ActionBarActivity {
     private static int questionsDelay = 500;
     private static int questionsPoints = 10;
+    private static int questionSeconds = 5;
     private int points = 0;
     private int lives = 10;
     private int correctAnswer;
@@ -30,6 +32,8 @@ public class PlayGame extends ActionBarActivity {
     private TextView lifeText;
     private Button[] answerButtons = new Button[4];
     private View gameOverLayout;
+
+    private CountDownTimer countdown;
 
 
     @Override
@@ -70,6 +74,7 @@ public class PlayGame extends ActionBarActivity {
 
     //an answer was clicked
     public void answerClicked(View view) {
+        countdown.cancel();
         int answ; //-1 by default
         buttonsActive(false);
         switch (view.getId()) {
@@ -127,6 +132,19 @@ public class PlayGame extends ActionBarActivity {
 
         questionText.setText(quest.text);
         hideAnswerImage();
+        countdown = new CountDownTimer(questionSeconds * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                //timer stuff
+            }
+
+            @Override
+            public void onFinish() {
+                wrongAnswer();
+                updateTexts();
+                nextQuestion();
+            }
+        }.start();
     }
 
     //next question after som time
