@@ -25,14 +25,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="demiurgosoft.lightquiz.MainActivity" />
         </activity>
-        <activity
-            android:name=".GameResult"
-            android:label="@string/title_activity_game_result"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="demiurgosoft.lightquiz.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

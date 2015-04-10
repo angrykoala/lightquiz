@@ -1,6 +1,5 @@
 package demiurgosoft.lightquiz;
 
-import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,20 +22,22 @@ public class PlayGame extends ActionBarActivity {
     private int points = 0;
     private int lives = 10;
     private int correctAnswer;
-
+    private boolean isGameOver;
+    //Layout Stuff
     private ImageView correctImg;
     private ImageView wrongImg;
     private TextView pointsText;
     private TextView lifeText;
     private Button[] answerButtons = new Button[4];
+    private View gameOverLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
         loadLayout();
-        updateTexts();
-        setQuestion();
+        restartGame();
     }
 
     @Override
@@ -63,9 +64,11 @@ public class PlayGame extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        gameOver();
+        if (isGameOver) this.finish();
+        else gameOver();
     }
 
+    //an answer was clicked
     public void answerClicked(View view) {
         int answ; //-1 by default
         buttonsActive(false);
@@ -91,7 +94,22 @@ public class PlayGame extends ActionBarActivity {
         nextQuestion();
     }
 
+    //Another button was clicked
+    public void buttonClick(View view) {
+        switch (view.getId()) {
+            case R.id.restart_button:
+                restartGame();
+                break;
+            case R.id.return_button:
+                this.finish();
+                break;
+            default:
+                throw new RuntimeException("Unknown button ID");
+        }
 
+    }
+
+    //set a new question from generator
     private void setQuestion() {
         buttonsActive(true);
         Question quest = MainActivity.generator.getQuestion();
@@ -111,6 +129,7 @@ public class PlayGame extends ActionBarActivity {
         hideAnswerImage();
     }
 
+    //next question after som time
     private void nextQuestion() {
         if (!MainActivity.generator.isReady()) {
             try {
@@ -129,6 +148,7 @@ public class PlayGame extends ActionBarActivity {
 
     }
 
+    //What happens when a correct answer was clicked
     private void correctAnswer() {
         points += questionsPoints;
         wrongImg.setVisibility(View.INVISIBLE);
@@ -136,6 +156,7 @@ public class PlayGame extends ActionBarActivity {
         MainActivity.sound.playCorrectSound();
     }
 
+    //What happens when a wrong answer was clicked
     private void wrongAnswer() {
         correctImg.setVisibility(View.INVISIBLE);
         wrongImg.setVisibility(View.VISIBLE);
@@ -143,6 +164,7 @@ public class PlayGame extends ActionBarActivity {
         if (lives == 0) gameOver();
     }
 
+    //Hides any answer image (tick or cross)
     private void hideAnswerImage() {
         correctImg.setVisibility(View.INVISIBLE);
         wrongImg.setVisibility(View.INVISIBLE);
@@ -165,22 +187,56 @@ public class PlayGame extends ActionBarActivity {
         answerButtons[2] = (Button) findViewById(R.id.answer_3);
         answerButtons[3] = (Button) findViewById(R.id.answer_4);
 
+        gameOverLayout = findViewById(R.id.game_over);
+        gameOverLayout.setVisibility(View.INVISIBLE);
     }
 
+    //Updates life and score texts
     private void updateTexts() {
         lifeText.setText("Life:" + lives);
         pointsText.setText("Score:" + points);
     }
+
     private void gameOver() {
-        Intent intent = new Intent(this, GameResult.class);
-        intent.putExtra("Game_Result", points);
-        startActivity(intent); //starts new activity
-        this.finish(); //finish this activity
+        buttonsActive(false);
+        gameOverLayout.setVisibility(View.VISIBLE);
+        isGameOver = true;
+        showFinalScore();
     }
 
+    //reloads questions from xml
     private void reload_questions() throws IOException, XmlPullParserException {
         XmlResourceParser xmlq = getResources().getXml(R.xml.questions);
         MainActivity.generator.loadQuestions(xmlq);
         xmlq.close();
+    }
+
+    //restarts game
+    private void restartGame() {
+        hideAnswerImage();
+        isGameOver = false;
+        points = 0;
+        lives = 10;
+        buttonsActive(true);
+        gameOverLayout.setVisibility(View.INVISIBLE);
+        updateTexts();
+        setQuestion();
+    }
+
+    //shows gameOver information
+    private void showFinalScore() {
+        TextView scoreText = (TextView) findViewById(R.id.score_text);
+        scoreText.setText("Score: " + points);
+        if (setHighScore()) {
+            TextView newHighScoreText = (TextView) findViewById(R.id.new_highscore_text);
+            newHighScoreText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //returns true if new highscore
+    private boolean setHighScore() {
+        boolean b = MainActivity.currentPlayer.setHighScore(points);
+        MainActivity.currentPlayer.savePlayer(this);
+        return b;
     }
 }

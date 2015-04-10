@@ -22,8 +22,6 @@
             android:id="@+id/answer_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/answer_2"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:onClick="answerClicked"
             android:text="@string/answer_1" />
@@ -32,8 +30,6 @@
             android:id="@+id/answer_2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/answer_3"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:onClick="answerClicked"
             android:text="@string/answer_2" />
@@ -42,8 +38,6 @@
             android:id="@+id/answer_3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/answer_4"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:onClick="answerClicked"
             android:text="@string/answer_3" />
@@ -52,8 +46,6 @@
             android:id="@+id/answer_4"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:onClick="answerClicked"
             android:text="@string/answer_4" />
@@ -119,6 +111,61 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ee2222"
         android:textSize="30sp" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/game_over"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:visibility="invisible"
+        tools:context="demiurgosoft.lightquiz.PlayGame">
+
+        <Button
+            android:id="@+id/restart_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/return_button"
+            android:layout_centerHorizontal="true"
+            android:onClick="buttonClick"
+            android:text="@string/restart_button"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/return_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="buttonClick"
+            android:text="@string/return_button" />
+
+        <TextView
+            android:id="@+id/score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/score"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/new_highscore_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:text="@string/new_highscore"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="30sp"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
 </RelativeLayout>
 
