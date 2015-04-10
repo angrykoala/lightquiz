@@ -17,14 +17,16 @@ import java.io.IOException;
 public class MainActivity extends ActionBarActivity {
     public static Player currentPlayer;
     public static QuestionsGenerator generator;
+    public static SoundHandler sound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        currentPlayer = new Player(this);
+        currentPlayer = new Player(this.getApplicationContext());
+        sound = new SoundHandler(this.getApplicationContext());
         updateHighScore();
         try {
-            load_xml_questions();
+            loadXmlQuestions();
         } catch (IOException | XmlPullParserException e) {
             e.printStackTrace();
         }
@@ -78,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
         highScoreText.setText("High Score:  " + currentPlayer.getHighScore());
     }
 
-    private void load_xml_questions() throws IOException, XmlPullParserException {
+    private void loadXmlQuestions() throws IOException, XmlPullParserException {
         XmlResourceParser xmlq = getResources().getXml(R.xml.questions);
         generator = new QuestionsGenerator(xmlq);
         xmlq.close();
