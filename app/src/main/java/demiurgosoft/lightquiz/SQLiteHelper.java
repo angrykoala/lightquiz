@@ -18,30 +18,43 @@ import java.io.OutputStream;
  */
 
 public class SQLiteHelper extends SQLiteOpenHelper {
-    //The Android's default system path of your application database.
-    private static String DB_PATH; // = "/data/data/com.demiurgosoft.lightquiz/databases/";
-
-    private static String DB_NAME = "lighquiz.db";
     private final Context dbContext;
+    //The Android's default system path of your application database.
+    private String dbPath; // = "/data/data/com.demiurgosoft.lightquiz/databases/";
+    private String dbName = "lightquiz.db";
     private SQLiteDatabase database;
 
 
-    public SQLiteHelper(Context context) {
-        super(context, DB_NAME, null, 1);
+    public SQLiteHelper(Context context, String fileName) {
+        super(context, fileName, null, 1);
         if (android.os.Build.VERSION.SDK_INT >= 17) {
-            DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+            dbPath = context.getApplicationInfo().dataDir + "/databases/";
         } else {
-            DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+            dbPath = "/data/data/" + context.getPackageName() + "/databases/";
         }
+        this.dbName = fileName;
         this.dbContext = context;
 
     }
 
-    public void createDataBase() throws IOException {
-        //If database not exists copy it from the assets
+    //Open the database, so we can query it (create if dont exists)
+    public boolean openDataBase() throws SQLException, IOException {
+        createDataBase(); //if db dont exist
+        String mPath = dbPath + dbName;
+        //Log.v("mPath", mPath);
+        database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);//CREATE_IF_NECESSARY en vez de OPEN_READONLY si hay problemas
+        //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+        return database != null;
+    }
 
-        boolean mDataBaseExist = checkDataBase();
-        if (!mDataBaseExist) {
+    public Cursor query(String dbquery) {
+        SQLiteDatabase db = this.getReadableDatabase(); //getWritableDatabase()??
+        return db.rawQuery(dbquery, null);
+    }
+
+    private void createDataBase() throws IOException {
+        //If database not exists copy it from the assets
+        if (!checkDataBase()) {
             this.getReadableDatabase();
             this.close();
             try {
@@ -56,14 +69,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //Check that the database exists here: /data/data/your package/databases/Da Name
     private boolean checkDataBase() {
-        File dbFile = new File(DB_PATH + DB_NAME);
+        File dbFile = new File(dbPath + dbName);
         //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists();
     }
 
     private void copyDataBase() throws IOException {
-        InputStream mInput = dbContext.getAssets().open(DB_NAME);
-        String outFileName = DB_PATH + DB_NAME;
+        InputStream mInput = dbContext.getAssets().open(dbName);
+        String outFileName = dbPath + dbName;
         OutputStream mOutput = new FileOutputStream(outFileName);
         byte[] mBuffer = new byte[1024];
         int mLength;
@@ -75,14 +88,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         mInput.close();
     }
 
-    //Open the database, so we can query it
-    public boolean openDataBase() throws SQLException {
-        String mPath = DB_PATH + DB_NAME;
-        //Log.v("mPath", mPath);
-        database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);//CREATE_IF_NECESSARY
-        //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-        return database != null;
-    }
+
 
        /* DATABASE_NAME = DBActivity.DatabaseName;
         // checking database and open it if exists
@@ -120,14 +126,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super.close();
     }
 
-    public void loadQuestions() {
-        //List<Question> books = new LinkedList<Questions>();
+    /*public void loadQuestions(QuestionsGenerator generator) {
 
         // 1. build the query
         String query = "SELECT  * FROM LIGHTQUIZ";
 
         // 2. get reference to writable DB
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(); //getWritableDatabase()??
         Cursor cursor = db.rawQuery(query, null);
 
 
@@ -135,6 +140,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Question question;
         if (cursor.moveToFirst()) {
             do {
+                Log.d("SQL","load question");
                 question = new Question();
                 question.correctAnswer = 1;
                 question.text = cursor.getString(cursor.getColumnIndex("QUESTION")); //columna question
@@ -142,10 +148,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 question.answers.add(cursor.getString(cursor.getColumnIndex("A1")));
                 question.answers.add(cursor.getString(cursor.getColumnIndex("A2")));
                 question.answers.add(cursor.getString(cursor.getColumnIndex("A3")));
-
-                MainActivity.generator.addQuestion(question);
+                Log.d("SQL", question.text);
+                generator.addQuestion(question);
             } while (cursor.moveToNext());
         }
 
-    }
+    }*/
 }
