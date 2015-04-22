@@ -1,10 +1,11 @@
 package demiurgosoft.lightquiz;
 
-import android.content.res.XmlResourceParser;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,15 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 
 
 public class PlayGame extends ActionBarActivity {
-    private static int questionsDelay = 500;
-    private static int questionsPoints = 10;
-    private static int questionSeconds = 5;
+    private final int questionsDelay = 500;
+    private final int questionsPoints = 10;
+    private final int questionSeconds = 5;
+    private final String databaseQuery = "SELECT  * FROM LIGHTQUIZ";
     private int points = 0;
     private int lives = 10;
     private int correctAnswer;
@@ -35,14 +35,19 @@ public class PlayGame extends ActionBarActivity {
     private View gameOverLayout;
 
     private CountDownTimer countdown;
-
+    private QuestionsGenerator generator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
+        try {
+            loadQuestions();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         loadLayout();
-        restartGame();
+        startGame();
     }
 
     @Override
@@ -104,7 +109,7 @@ public class PlayGame extends ActionBarActivity {
     public void buttonClick(View view) {
         switch (view.getId()) {
             case R.id.restart_button:
-                restartGame();
+                //restartGame();
                 break;
             case R.id.return_button:
                 this.finish();
@@ -118,7 +123,7 @@ public class PlayGame extends ActionBarActivity {
     //set a new question from generator
     private void setQuestion() {
         buttonsActive(true);
-        Question quest = MainActivity.generator.getQuestion();
+        Question quest = generator.getQuestion();
         if (!quest.validQuestion()) throw new RuntimeException("Invalid Question");
         this.correctAnswer = quest.correctAnswer;
         Button b1 = (Button) findViewById(R.id.answer_1);
@@ -155,13 +160,13 @@ public class PlayGame extends ActionBarActivity {
 
     //next question after som time
     private void nextQuestion() {
-        if (!MainActivity.generator.isReady()) {
+       /* if (!MainActivity.generator.isReady()) {
             try {
                 reload_questions();
             } catch (IOException | XmlPullParserException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -214,6 +219,7 @@ public class PlayGame extends ActionBarActivity {
 
         gameOverLayout = findViewById(R.id.game_over);
         gameOverLayout.setVisibility(View.INVISIBLE);
+        hideAnswerImage();
     }
 
     //Updates life and score texts
@@ -231,15 +237,15 @@ public class PlayGame extends ActionBarActivity {
     }
 
     //reloads questions from xml
-    private void reload_questions() throws IOException, XmlPullParserException {
+   /* private void reload_questions() throws IOException, XmlPullParserException {
         XmlResourceParser xmlq = getResources().getXml(R.xml.questions);
         MainActivity.generator.loadQuestions(xmlq);
         xmlq.close();
-    }
+    }*/
 
     //restarts game
-    private void restartGame() {
-        hideAnswerImage();
+    private void startGame() {
+
         isGameOver = false;
         points = 0;
         lives = 10;
@@ -264,5 +270,15 @@ public class PlayGame extends ActionBarActivity {
         boolean b = MainActivity.currentPlayer.setHighScore(points);
         MainActivity.currentPlayer.savePlayer(this);
         return b;
+    }
+
+    private void loadQuestions() throws IOException {
+        SQLiteHelper database = new SQLiteHelper(this, "lq.db");
+        if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
+        else {
+            Cursor cursor = database.query(databaseQuery);
+            this.generator = new QuestionsGenerator(cursor);
+        }
+        database.close();
     }
 }

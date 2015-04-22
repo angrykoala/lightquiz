@@ -1,5 +1,7 @@
 package demiurgosoft.lightquiz;
 
+import android.database.Cursor;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -15,14 +17,33 @@ public class QuestionsGenerator {
 
     private boolean ready;
 
+    //Default constructor
+    public QuestionsGenerator() {
+        questionsList = new ArrayList<>();
+        ready = false;
+    }
+
+    //Constructor from a XMLParser
     public QuestionsGenerator(XmlPullParser parser) throws IOException, XmlPullParserException {
         questionsList = new ArrayList<>();
         loadQuestions(parser);
     }
 
+    public QuestionsGenerator(Cursor dbCursor) {
+        questionsList = new ArrayList<>();
+        if (dbCursor != null) loadQuestions(dbCursor);
+    }
+
+    //true if it have at least one valid question
     public boolean isReady() {
         return ready;
     }
+
+    public void shuffle() {
+        Collections.shuffle(this.questionsList);
+    }
+
+    //return a question (runtime exception if empty), removes question from list
     public Question getQuestion() {
         if (questionsList.isEmpty()) throw new RuntimeException("QuestionGenerator empty");
         else {
@@ -34,12 +55,21 @@ public class QuestionsGenerator {
         }
     }
 
-    public boolean addQuestion(Question q) {
-        boolean b = q.validQuestion();
-        if (b) questionsList.add(q);
-        return b;
+    //adds a question if valid
+    private boolean addQuestion(Question q) {
+        boolean valid = q.validQuestion();
+        if (valid) {
+            questionsList.add(q);
+        }
+        return valid;
     }
 
+    //return generator size
+    public int size() {
+        return questionsList.size();
+    }
+
+    //Reads questions from xmlpullparser
     private void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
         int eventType = parser.getEventType();
         String currentTag;
@@ -56,9 +86,32 @@ public class QuestionsGenerator {
         }
     }
 
-    public void loadQuestions(XmlPullParser parser) throws XmlPullParserException, IOException {
+    //reads from a cursor (database)
+    private void readCursor(Cursor cursor) {
+        if (cursor.moveToFirst()) {
+            Question question;
+            do {
+                question = new Question();
+                question.readCursor(cursor);
+                addQuestion(question);
+            } while (cursor.moveToNext());
+        }
+    }
+
+    private void loadQuestions(XmlPullParser parser) throws XmlPullParserException, IOException {
         readXML(parser);
-        Collections.shuffle(questionsList);
-        ready = true;
+        shuffle();
+        checkReady();
+    }
+
+    private void loadQuestions(Cursor cursor) {
+        readCursor(cursor);
+        shuffle();
+        checkReady();
+    }
+
+    private void checkReady() {
+        if (this.size() >= 1 && questionsList.get(0).validQuestion())
+            ready = true;
     }
 }

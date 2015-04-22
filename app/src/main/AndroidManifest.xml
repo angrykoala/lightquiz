@@ -22,7 +22,14 @@
             android:label="@string/title_activity_play_game"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="demiurgosoft.lightquiz.MainActivity" />
+        </activity>
+        <activity
+            android:name=".GameOver"
+            android:label="@string/title_activity_game_over"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="demiurgosoft.lightquiz.MainActivity" />

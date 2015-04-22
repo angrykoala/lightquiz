@@ -1,5 +1,7 @@
 package demiurgosoft.lightquiz;
 
+import android.database.Cursor;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,6 +16,7 @@ public class Question {
     public String text;
     public ArrayList<String> answers;
     public int correctAnswer; //from 1 to 4
+
 
     public Question() {
         correctAnswer = -1;
@@ -31,6 +34,14 @@ public class Question {
         return b;
     }
 
+    public void readCursor(Cursor cursor) {
+        this.correctAnswer = 1;
+        text = cursor.getString(cursor.getColumnIndex("QUESTION")); //columna question
+        answers.add(cursor.getString(cursor.getColumnIndex("CA")));
+        answers.add(cursor.getString(cursor.getColumnIndex("A1")));
+        answers.add(cursor.getString(cursor.getColumnIndex("A2")));
+        answers.add(cursor.getString(cursor.getColumnIndex("A3")));
+    }
     public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, null, "Q");
         int current = 0; //current answer to read

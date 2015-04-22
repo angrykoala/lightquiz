@@ -26,4 +26,7 @@
     <string name="score">Score</string>
     <string name="highscore">High Score</string>
     <string name="life">Life</string>
+    <string name="title_activity_game_over">GameOver</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
