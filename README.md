@@ -4,6 +4,8 @@ by @demiurgosoft & @softwarejimenez
 
 Simple Quiz app for Android
 
+question_generator.py is a python program to handle LightQuiz question generation
+
 Features (planned):
 * [X] Random Questions
 * [X] Questions from external database (or file)

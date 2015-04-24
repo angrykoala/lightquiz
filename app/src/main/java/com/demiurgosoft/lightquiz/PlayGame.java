@@ -7,12 +7,14 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -233,5 +235,9 @@ public class PlayGame extends ActionBarActivity {
             this.generator = new QuestionsGenerator(cursor);
         }
         database.close();
+
+        Toast toast = Toast.makeText(this, "Quiz is Ready", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
