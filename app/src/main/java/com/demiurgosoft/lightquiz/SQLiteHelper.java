@@ -105,32 +105,4 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super.close();
     }
 
-    /*public void loadQuestions(QuestionsGenerator generator) {
-
-        // 1. build the query
-        String query = "SELECT  * FROM LIGHTQUIZ";
-
-        // 2. get reference to writable DB
-        SQLiteDatabase db = this.getReadableDatabase(); //getWritableDatabase()??
-        Cursor cursor = db.rawQuery(query, null);
-
-
-        // 3. go over each row, build book and add it to list
-        Question question;
-        if (cursor.moveToFirst()) {
-            do {
-                Log.d("SQL","load question");
-                question = new Question();
-                question.correctAnswer = 1;
-                question.text = cursor.getString(cursor.getColumnIndex("QUESTION")); //columna question
-                question.answers.add(cursor.getString(cursor.getColumnIndex("CA")));
-                question.answers.add(cursor.getString(cursor.getColumnIndex("A1")));
-                question.answers.add(cursor.getString(cursor.getColumnIndex("A2")));
-                question.answers.add(cursor.getString(cursor.getColumnIndex("A3")));
-                Log.d("SQL", question.text);
-                generator.addQuestion(question);
-            } while (cursor.moveToNext());
-        }
-
-    }*/
 }

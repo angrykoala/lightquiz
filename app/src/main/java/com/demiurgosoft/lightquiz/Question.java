@@ -16,7 +16,8 @@ public class Question {
     public String text;
     public ArrayList<String> answers;
     public int correctAnswer; //from 1 to 4
-
+    //public String sound;
+    //public String image;
 
     public Question() {
         correctAnswer = -1;
@@ -41,6 +42,9 @@ public class Question {
         answers.add(cursor.getString(cursor.getColumnIndex("A1")));
         answers.add(cursor.getString(cursor.getColumnIndex("A2")));
         answers.add(cursor.getString(cursor.getColumnIndex("A3")));
+
+        // answers.add(cursor.getString(cursor.getColumnIndex("SOUND_SRC")));
+        // answers.add(cursor.getString(cursor.getColumnIndex("IMAGE_SRC")));
     }
 
     public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {

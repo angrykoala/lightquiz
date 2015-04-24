@@ -178,7 +178,7 @@ public class PlayGame extends ActionBarActivity {
         points += questionsPoints;
         wrongImg.setVisibility(View.INVISIBLE);
         correctImg.setVisibility(View.VISIBLE);
-        MainActivity.sound.playCorrectSound();
+        ((LightQuiz) this.getApplicationContext()).soundHandler.playCorrectSound();
     }
 
     //What happens when a wrong answer was clicked
@@ -256,6 +256,16 @@ public class PlayGame extends ActionBarActivity {
         if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
         else {
             Cursor cursor = database.query(databaseQuery);
+            this.generator = new QuestionsGenerator(cursor);
+        }
+        database.close();
+    }
+
+    private void loadQuestions(String genre) throws IOException {
+        SQLiteHelper database = new SQLiteHelper(this, databaseName);
+        if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
+        else {
+            Cursor cursor = database.query(databaseQuery + "WHERE GENRE='" + genre + "'");
             this.generator = new QuestionsGenerator(cursor);
         }
         database.close();

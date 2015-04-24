@@ -11,15 +11,13 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
     //public static QuestionsGenerator generator;
-    public static SoundHandler sound;
     private Player currentPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.demiurgosoft.lightquiz.R.layout.activity_main);
         currentPlayer = ((LightQuiz) getApplication()).player; //gets player from lightquiz application
-        // = new Player(this.getApplicationContext());
-        sound = new SoundHandler(this.getApplicationContext());
         updateHighScore();
         /*try {
             loadXmlQuestions();
@@ -78,8 +76,8 @@ public class MainActivity extends ActionBarActivity {
         switch (view.getId()) {
             case com.demiurgosoft.lightquiz.R.id.start_button:
                 // if (generator.isReady()) {
-                    Intent intent = new Intent(this, PlayGame.class);
-                    startActivity(intent);
+                Intent intent = new Intent(this, PlayGame.class);
+                startActivity(intent);
                 //  }
                 break;
             default:

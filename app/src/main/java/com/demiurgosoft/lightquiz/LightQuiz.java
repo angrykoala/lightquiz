@@ -8,11 +8,13 @@ import android.app.Application;
  */
 public class LightQuiz extends Application {
     public Player player;
+    public SoundHandler soundHandler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         player = new Player(this.getApplicationContext());
+        soundHandler = new SoundHandler(this.getApplicationContext());
     }
 
 }

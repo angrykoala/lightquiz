@@ -14,7 +14,7 @@ conn = sqlite3.connect('test.db');
 def insertQuestion(question,correctAnswer,answer1,answer2,answer3,genero):
 	imagen="NULL";
 	sonido="NULL";
-	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,GENERO,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
+	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
 
 
 
@@ -22,7 +22,7 @@ def insertQuestion(question,correctAnswer,answer1,answer2,answer3,genero):
 def insertQuestion_img(question,correctAnswer,answer1,answer2,answer3,genero,imagen=None):
 	imagen="'"+imagen+"'";
 	sonido="NULL";
-	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,GENERO,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
+	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
 
 
 
@@ -30,7 +30,7 @@ def insertQuestion_img(question,correctAnswer,answer1,answer2,answer3,genero,ima
 def insertQuestion_sonido(question,correctAnswer,answer1,answer2,answer3,genero,sonido=None):
 	sonido="'"+sonido+"'";
 	imagen="NULL";
-	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,GENERO,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
+	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
 
 
 
@@ -45,7 +45,7 @@ def creardatabase():
 	   A1       TEXT    NOT NULL,
 	   A2       TEXT    NOT NULL,
 	   A3       TEXT    NOT NULL,
-	   GENERO	    TEXT    NOT NULL,
+	   CATEGORY	    TEXT    NOT NULL,
 	   SOUND_NAME	TEXT,
 	   IMAGEN_NAME       TEXT);''');
 	print "Table created successfully";
@@ -63,7 +63,7 @@ def mostrar():
 		text.insert(END,"A1 = "+ row[3]);
 		text.insert(END, "A2 = "+ row[4]);
 		text.insert(END, "A3 = "+ row[5]);
-		text.insert(END, "GENERO = "+ row[6]);
+		text.insert(END, "CATEGORY = "+ row[6]);
 		if row[7] is None:
 			text.insert(END, "SOUND_NAME= ");
 		else:
