@@ -48,6 +48,10 @@ public class GameOver extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
     //shows gameOver information
     private void showFinalScore() {
         TextView scoreText = (TextView) findViewById(R.id.score_text);

@@ -1,5 +1,6 @@
 package com.demiurgosoft.lightquiz;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,18 +39,37 @@ public class PlayGame extends ActionBarActivity {
 
     private CountDownTimer countdown;
     private QuestionsGenerator generator;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
-        try {
-            loadQuestions();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        loadLayout();
-        startGame();
+
+        progress = new ProgressDialog(this);
+        progress.setMessage("Loading Database ");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    loadQuestions();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                loadLayout();
+
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        startGame();
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override
@@ -225,6 +245,10 @@ public class PlayGame extends ActionBarActivity {
         buttonsActive(true);
         updateTexts();
         setQuestion();
+        progress.dismiss();
+        Toast toast = Toast.makeText(this, "Quiz is Ready", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     private void loadQuestions() throws IOException {
@@ -235,9 +259,5 @@ public class PlayGame extends ActionBarActivity {
             this.generator = new QuestionsGenerator(cursor);
         }
         database.close();
-
-        Toast toast = Toast.makeText(this, "Quiz is Ready", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 }

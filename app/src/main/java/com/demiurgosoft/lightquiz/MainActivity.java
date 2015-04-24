@@ -69,6 +69,11 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
+
     public void startGame(View view) {
         switch (view.getId()) {
             case com.demiurgosoft.lightquiz.R.id.start_button:
