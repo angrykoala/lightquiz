@@ -1,4 +1,4 @@
-package demiurgosoft.lightquiz;
+package com.demiurgosoft.lightquiz;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -21,7 +21,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private final Context dbContext;
     //The Android's default system path of your application database.
     private String dbPath; // = "/data/data/com.demiurgosoft.lightquiz/databases/";
-    private String dbName = "lightquiz.db";
+    private String dbName;
     private SQLiteDatabase database;
 
 
@@ -87,27 +87,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         mOutput.close();
         mInput.close();
     }
-
-
-
-       /* DATABASE_NAME = DBActivity.DatabaseName;
-        // checking database and open it if exists
-        if (checkDataBase()) {
-            openDataBase();
-        } else
-        {
-            try {
-                this.getReadableDatabase();
-                copyDataBase();
-                this.close();
-                openDataBase();
-
-            } catch (IOException e) {
-                throw new Error("Error copying database");
-            }
-            Toast.makeText(context, "Initial database is created", Toast.LENGTH_LONG).show();
-        }
-    }*/
 
     @Override
     public void onCreate(SQLiteDatabase db) {

@@ -1,5 +1,6 @@
-package demiurgosoft.lightquiz;
+package com.demiurgosoft.lightquiz;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,10 +22,10 @@ public class PlayGame extends ActionBarActivity {
     private final int questionsPoints = 10;
     private final int questionSeconds = 5;
     private final String databaseQuery = "SELECT  * FROM LIGHTQUIZ";
+    private final String databaseName = "lq.db";
     private int points = 0;
     private int lives = 10;
     private int correctAnswer;
-    private boolean isGameOver;
     //Layout Stuff
     private ImageView correctImg;
     private ImageView wrongImg;
@@ -32,7 +33,6 @@ public class PlayGame extends ActionBarActivity {
     private TextView lifeText;
     private TextView countdownText;
     private Button[] answerButtons = new Button[4];
-    private View gameOverLayout;
 
     private CountDownTimer countdown;
     private QuestionsGenerator generator;
@@ -74,66 +74,45 @@ public class PlayGame extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if (isGameOver) this.finish();
-        else gameOver();
+        // this.finish();
+        gameOver();
     }
 
     //an answer was clicked
     public void answerClicked(View view) {
         countdown.cancel();
-        int answ; //-1 by default
+        int answer = -1; //-1 by default
         buttonsActive(false);
         switch (view.getId()) {
             case R.id.answer_1:
-                answ = 1;
+                answer = 1;
                 break;
             case R.id.answer_2:
-                answ = 2;
+                answer = 2;
                 break;
             case R.id.answer_3:
-                answ = 3;
+                answer = 3;
                 break;
             case R.id.answer_4:
-                answ = 4;
+                answer = 4;
                 break;
             default:
                 throw new RuntimeException("Unknown button ID");
         }
-        if (correctAnswer == answ) correctAnswer();
+        if (correctAnswer == answer) correctAnswer();
         else wrongAnswer();
         updateTexts();
         nextQuestion();
     }
 
-    //Another button was clicked
-    public void buttonClick(View view) {
-        switch (view.getId()) {
-            case R.id.restart_button:
-                //restartGame();
-                break;
-            case R.id.return_button:
-                this.finish();
-                break;
-            default:
-                throw new RuntimeException("Unknown button ID");
-        }
-
-    }
-
     //set a new question from generator
     private void setQuestion() {
         buttonsActive(true);
-        Question quest = generator.getQuestion();
+        Question quest = generator.getQuestion();//get a randomized question
         if (!quest.validQuestion()) throw new RuntimeException("Invalid Question");
         this.correctAnswer = quest.correctAnswer;
-        Button b1 = (Button) findViewById(R.id.answer_1);
-        Button b2 = (Button) findViewById(R.id.answer_2);
-        Button b3 = (Button) findViewById(R.id.answer_3);
-        Button b4 = (Button) findViewById(R.id.answer_4);
-        b1.setText(quest.answers.get(0));
-        b2.setText(quest.answers.get(1));
-        b3.setText(quest.answers.get(2));
-        b4.setText(quest.answers.get(3));
+        for (int i = 0; i < 4; i++)
+            answerButtons[i].setText(quest.answers.get(i)); //set questions layout
         TextView questionText = (TextView) findViewById(R.id.question);
 
         questionText.setText(quest.text);
@@ -160,21 +139,16 @@ public class PlayGame extends ActionBarActivity {
 
     //next question after som time
     private void nextQuestion() {
-       /* if (!MainActivity.generator.isReady()) {
-            try {
-                reload_questions();
-            } catch (IOException | XmlPullParserException e) {
-                e.printStackTrace();
-            }
-        }*/
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setQuestion();
-            }
-        }, questionsDelay);
-
+        if (generator.size() == 0) gameOver(); //no more questions left
+        else {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setQuestion();
+                }
+            }, questionsDelay);
+        }
     }
 
     //What happens when a correct answer was clicked
@@ -217,8 +191,6 @@ public class PlayGame extends ActionBarActivity {
         answerButtons[2] = (Button) findViewById(R.id.answer_3);
         answerButtons[3] = (Button) findViewById(R.id.answer_4);
 
-        gameOverLayout = findViewById(R.id.game_over);
-        gameOverLayout.setVisibility(View.INVISIBLE);
         hideAnswerImage();
     }
 
@@ -231,9 +203,10 @@ public class PlayGame extends ActionBarActivity {
 
     private void gameOver() {
         buttonsActive(false);
-        gameOverLayout.setVisibility(View.VISIBLE);
-        isGameOver = true;
-        showFinalScore();
+        Intent intent = new Intent(this, GameOver.class);
+        intent.putExtra("Score", points);
+        startActivity(intent);
+        this.finish();
     }
 
     //reloads questions from xml
@@ -243,37 +216,17 @@ public class PlayGame extends ActionBarActivity {
         xmlq.close();
     }*/
 
-    //restarts game
+    //Starts game
     private void startGame() {
-
-        isGameOver = false;
         points = 0;
         lives = 10;
         buttonsActive(true);
-        gameOverLayout.setVisibility(View.INVISIBLE);
         updateTexts();
         setQuestion();
     }
 
-    //shows gameOver information
-    private void showFinalScore() {
-        TextView scoreText = (TextView) findViewById(R.id.score_text);
-        scoreText.setText("Score: " + points);
-        if (setHighScore()) {
-            TextView newHighScoreText = (TextView) findViewById(R.id.new_highscore_text);
-            newHighScoreText.setVisibility(View.VISIBLE);
-        }
-    }
-
-    //returns true if new highscore
-    private boolean setHighScore() {
-        boolean b = MainActivity.currentPlayer.setHighScore(points);
-        MainActivity.currentPlayer.savePlayer(this);
-        return b;
-    }
-
     private void loadQuestions() throws IOException {
-        SQLiteHelper database = new SQLiteHelper(this, "lq.db");
+        SQLiteHelper database = new SQLiteHelper(this, databaseName);
         if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
         else {
             Cursor cursor = database.query(databaseQuery);

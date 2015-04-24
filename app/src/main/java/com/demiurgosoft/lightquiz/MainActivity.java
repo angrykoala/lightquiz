@@ -1,4 +1,4 @@
-package demiurgosoft.lightquiz;
+package com.demiurgosoft.lightquiz;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +10,15 @@ import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
-    public static Player currentPlayer;
     //public static QuestionsGenerator generator;
     public static SoundHandler sound;
+    private Player currentPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        currentPlayer = new Player(this.getApplicationContext());
+        setContentView(com.demiurgosoft.lightquiz.R.layout.activity_main);
+        currentPlayer = ((LightQuiz) getApplication()).player; //gets player from lightquiz application
+        // = new Player(this.getApplicationContext());
         sound = new SoundHandler(this.getApplicationContext());
         updateHighScore();
         /*try {
@@ -49,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(com.demiurgosoft.lightquiz.R.menu.menu_main, menu);
         return true;
     }
 
@@ -61,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == com.demiurgosoft.lightquiz.R.id.action_settings) {
             return true;
         }
 
@@ -70,7 +71,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void startGame(View view) {
         switch (view.getId()) {
-            case R.id.start_button:
+            case com.demiurgosoft.lightquiz.R.id.start_button:
                 // if (generator.isReady()) {
                     Intent intent = new Intent(this, PlayGame.class);
                     startActivity(intent);
@@ -83,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void updateHighScore() {
-        TextView highScoreText = (TextView) findViewById(R.id.highscore);
+        TextView highScoreText = (TextView) findViewById(com.demiurgosoft.lightquiz.R.id.highscore);
         highScoreText.setText("High Score:  " + currentPlayer.getHighScore());
     }
 

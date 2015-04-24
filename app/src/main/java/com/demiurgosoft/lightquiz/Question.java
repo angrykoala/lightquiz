@@ -1,4 +1,4 @@
-package demiurgosoft.lightquiz;
+package com.demiurgosoft.lightquiz;
 
 import android.database.Cursor;
 
@@ -42,6 +42,7 @@ public class Question {
         answers.add(cursor.getString(cursor.getColumnIndex("A2")));
         answers.add(cursor.getString(cursor.getColumnIndex("A3")));
     }
+
     public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, null, "Q");
         int current = 0; //current answer to read

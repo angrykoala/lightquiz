@@ -1,4 +1,4 @@
-package demiurgosoft.lightquiz;
+package com.demiurgosoft.lightquiz;
 
 import android.database.Cursor;
 
