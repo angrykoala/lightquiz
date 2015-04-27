@@ -6,7 +6,7 @@ from Tkinter import *
 #Windows variable
 top = Tkinter.Tk()
 #variable global base de datos
-conn = sqlite3.connect('test.db');
+conn = sqlite3.connect('lq.db');
 
 ######funciones base de datos###############
 
@@ -14,7 +14,7 @@ conn = sqlite3.connect('test.db');
 def insertQuestion(question,correctAnswer,answer1,answer2,answer3,genero):
 	imagen="NULL";
 	sonido="NULL";
-	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
+	conn.execute("INSERT INTO QUESTIONS (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGE_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
 
 
 
@@ -22,7 +22,7 @@ def insertQuestion(question,correctAnswer,answer1,answer2,answer3,genero):
 def insertQuestion_img(question,correctAnswer,answer1,answer2,answer3,genero,imagen=None):
 	imagen="'"+imagen+"'";
 	sonido="NULL";
-	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
+	conn.execute("INSERT INTO QUESTIONS (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGE_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
 
 
 
@@ -30,7 +30,7 @@ def insertQuestion_img(question,correctAnswer,answer1,answer2,answer3,genero,ima
 def insertQuestion_sonido(question,correctAnswer,answer1,answer2,answer3,genero,sonido=None):
 	sonido="'"+sonido+"'";
 	imagen="NULL";
-	conn.execute("INSERT INTO LIGHTQUIZ (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGEN_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
+	conn.execute("INSERT INTO QUESTIONS (QUESTION,CA,A1,A2,A3,CATEGORY,SOUND_NAME,IMAGE_NAME) VALUES ('"+question+"','"+correctAnswer+"','"+answer1+"','"+answer2+"','"+answer3+"','"+genero+"',"+sonido+","+imagen+")");
 
 
 
@@ -38,7 +38,7 @@ def insertQuestion_sonido(question,correctAnswer,answer1,answer2,answer3,genero,
 #funcion para crear la tabla de la base de datos, la crea si no existe
 def creardatabase():
 	print "Opened database successfully";
-	conn.execute('''CREATE TABLE if not exists LIGHTQUIZ
+	conn.execute('''CREATE TABLE if not exists QUESTIONS
 	   (ID INTEGER PRIMARY KEY     AUTOINCREMENT,
 	   QUESTION       TEXT NOT NULL,
 	   CA		     TEXT    NOT NULL,
@@ -47,7 +47,7 @@ def creardatabase():
 	   A3       TEXT    NOT NULL,
 	   CATEGORY	    TEXT    NOT NULL,
 	   SOUND_NAME	TEXT,
-	   IMAGEN_NAME       TEXT);''');
+	   IMAGE_NAME       TEXT);''');
 	print "Table created successfully";
 
 
@@ -55,7 +55,7 @@ def creardatabase():
 #funcion para mostrar los elementos en una ventana
 def mostrar():
     text.delete(0, END)#borramos todo lo que tiene
-    cursor = conn.execute("SELECT id,question,ca,a1,a2,a3,category,sound_name,imagen_name from LIGHTQUIZ");
+    cursor = conn.execute("SELECT id,question,ca,a1,a2,a3,category,sound_name,image_name from QUESTIONS");
     for row in cursor:
 		text.insert(END, "ID =" + str(row[0]));
 		text.insert(END, "QUESTION= "+row[1]);
@@ -69,9 +69,9 @@ def mostrar():
 		else:
 		    text.insert(END, "SOUND_NAME = "+ row[7]);
 		if row[8] is None:
-		    text.insert(END, "IMAGEN_NAME= ");
+		    text.insert(END, "IMAGE_NAME= ");
 		else:
-		    text.insert(END, "IMAGEN_NAME = "+ row[8]);
+		    text.insert(END, "IMAGE_NAME = "+ row[8]);
 		text.insert(END,"");
 
 
@@ -104,11 +104,11 @@ def insertar():
 def eliminar():
 	#quizas haya que pasar v1.get a int
 	if v9.get()!="":
-		conn.execute("DELETE FROM LIGHTQUIZ WHERE ID = ? ", (v9.get(),))
+		conn.execute("DELETE FROM QUESTIONS WHERE ID = ? ", (v9.get(),))
 		e9.delete(0, END) #vacia el texto dle entri
 		text.delete(0, END)#borramos todo lo que tiene
 		conn.commit();
-
+	
 #funcion para salir
 def salir():
     sys.exit(0)
@@ -117,7 +117,7 @@ def salir():
 
 #################programa#####################
 top.wm_title("Gestor base datos");#fijamos nombre ventana
-creardatabase();#creamso la tabla LIGHTQUIZ si no existe
+creardatabase();#creamso la tabla QUESTIONS si no existe
 
 ##################anadir widget####################
 #etiqueta y relleanr texto
