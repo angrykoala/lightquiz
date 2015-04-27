@@ -32,6 +32,8 @@ public class PlayGame extends ActionBarActivity {
     //Layout Stuff
     private ImageView correctImg;
     private ImageView wrongImg;
+    private ImageView questionImg;
+    private Button soundButton;
     private TextView pointsText;
     private TextView lifeText;
     private TextView countdownText;
@@ -125,7 +127,23 @@ public class PlayGame extends ActionBarActivity {
         nextQuestion();
     }
 
+    public void soundClick(View view) {
+        switch (view.getId()) {
+            case R.id.sound_button:
+                playSound();
+                break;
+            default:
+                throw new RuntimeException("Unknown button ID");
+
+        }
+    }
+
     //set a new question from generator
+
+    private void playSound() {
+        ((LightQuiz) this.getApplicationContext()).soundHandler.playQuestionSound();
+    }
+
     private void setQuestion() {
         buttonsActive(true);
         Question quest = generator.getQuestion();//get a randomized question
@@ -137,6 +155,9 @@ public class PlayGame extends ActionBarActivity {
 
         questionText.setText(quest.text);
         hideAnswerImage();
+        if (quest.hasImage()) showQuestionImage(quest.image);
+        else if (quest.hasSound()) showQuestionSound(quest.sound);
+
         countdown = new CountDownTimer(questionSeconds * 1000, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -155,6 +176,12 @@ public class PlayGame extends ActionBarActivity {
                 nextQuestion();
             }
         }.start();
+    }
+
+    private void showQuestionSound(String sound) {
+        soundButton.setVisibility(View.VISIBLE);
+        ((LightQuiz) this.getApplicationContext()).soundHandler.setQuestionSound(sound);
+
     }
 
     //next question after som time
@@ -197,12 +224,20 @@ public class PlayGame extends ActionBarActivity {
         }
     }
 
+    private void showQuestionImage(String imagename) {
+        int resourceId = this.getResources().getIdentifier("drawable", imagename, "com.demiurgosoft.lightquiz");
+        questionImg.setImageResource(resourceId);
+        questionImg.setVisibility(View.VISIBLE);
+    }
+
     private void loadLayout() {
         correctImg = (ImageView) findViewById(R.id.correct_img);
         wrongImg = (ImageView) findViewById(R.id.wrong_img);
         pointsText = (TextView) findViewById(R.id.points_text);
         lifeText = (TextView) findViewById(R.id.life_text);
         countdownText = (TextView) findViewById(R.id.countdown_text);
+        questionImg = (ImageView) findViewById(R.id.question_image);
+        soundButton = (Button) findViewById(R.id.sound_button);
 
         answerButtons[0] = (Button) findViewById(R.id.answer_1);
         answerButtons[1] = (Button) findViewById(R.id.answer_2);
@@ -247,6 +282,9 @@ public class PlayGame extends ActionBarActivity {
         toast.show();
         View fore = findViewById(R.id.foreground);
         fore.setVisibility(View.INVISIBLE);
+        questionImg.setVisibility(View.INVISIBLE);
+        soundButton.setVisibility(View.INVISIBLE);
+
     }
 
     private void loadQuestions() throws IOException {

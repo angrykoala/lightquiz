@@ -21,6 +21,7 @@
         <activity
             android:name=".PlayGame"
             android:label="@string/title_activity_play_game"
+            android:noHistory="true"
             android:parentActivityName=".GameOver"
             android:screenOrientation="portrait">
             <meta-data
@@ -30,6 +31,7 @@
         <activity
             android:name=".GameOver"
             android:label="@string/title_activity_game_over"
+            android:noHistory="true"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
         <meta-data

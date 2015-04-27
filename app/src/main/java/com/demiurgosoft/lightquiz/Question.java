@@ -16,8 +16,9 @@ public class Question {
     public String text;
     public ArrayList<String> answers;
     public int correctAnswer; //from 1 to 4
-    //public String sound;
-    //public String image;
+
+    public String sound;
+    public String image;
 
     public Question() {
         correctAnswer = -1;
@@ -43,8 +44,20 @@ public class Question {
         answers.add(cursor.getString(cursor.getColumnIndex("A2")));
         answers.add(cursor.getString(cursor.getColumnIndex("A3")));
 
-        // answers.add(cursor.getString(cursor.getColumnIndex("SOUND_SRC")));
-        // answers.add(cursor.getString(cursor.getColumnIndex("IMAGE_SRC")));
+//        sound=cursor.getString(cursor.getColumnIndex("SOUND_NAME"));
+//        image=cursor.getString(cursor.getColumnIndex("IMAGE_NAME"));
+
+    }
+
+    public boolean hasImage() {
+        if (image == null || image.isEmpty()) return false;
+        else return true;
+    }
+
+    public boolean hasSound() {
+        if (sound == null || sound.isEmpty()) return false;
+        else return true;
+
     }
 
     public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {

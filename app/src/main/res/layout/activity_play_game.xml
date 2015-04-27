@@ -19,6 +19,24 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/sound_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="soundClick"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/question_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
+
+        <Button
             android:id="@+id/answer_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -125,17 +143,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="48sp" />
 
-    <FrameLayout
+    <!--<FrameLayout
         android:id="@+id/foreground"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/white"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <Space
             android:layout_width="6dp"
             android:layout_height="6dp" />
-    </FrameLayout>
+    </FrameLayout>-->
 
 </RelativeLayout>
 
