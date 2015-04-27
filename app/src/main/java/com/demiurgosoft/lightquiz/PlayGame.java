@@ -101,7 +101,7 @@ public class PlayGame extends ActionBarActivity {
     //an answer was clicked
     public void answerClicked(View view) {
         countdown.cancel();
-        int answer = -1; //-1 by default
+        int answer; //-1 by default
         buttonsActive(false);
         switch (view.getId()) {
             case R.id.answer_1:
@@ -245,6 +245,8 @@ public class PlayGame extends ActionBarActivity {
         Toast toast = Toast.makeText(this, "Quiz is Ready", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+        View fore = findViewById(R.id.foreground);
+        fore.setVisibility(View.INVISIBLE);
     }
 
     private void loadQuestions() throws IOException {
