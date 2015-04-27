@@ -81,17 +81,15 @@ public class PlayGame extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case android.R.id.home:
+                gameOver();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -161,17 +159,15 @@ public class PlayGame extends ActionBarActivity {
 
     //next question after som time
     private void nextQuestion() {
-        if (generator.size() == 0) gameOver(); //no more questions left
-        else {
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    setQuestion();
+                    if (generator.size() == 0) gameOver(); //no more questions left
+                    else setQuestion();
                 }
             }, questionsDelay);
         }
-    }
 
     //What happens when a correct answer was clicked
     private void correctAnswer() {
@@ -224,11 +220,11 @@ public class PlayGame extends ActionBarActivity {
     }
 
     private void gameOver() {
+        this.finish();
         buttonsActive(false);
         Intent intent = new Intent(this, GameOver.class);
         intent.putExtra("Score", points);
         startActivity(intent);
-        this.finish();
     }
 
     //reloads questions from xml
