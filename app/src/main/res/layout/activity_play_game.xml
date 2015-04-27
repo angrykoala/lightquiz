@@ -16,15 +16,19 @@
         android:layout_centerHorizontal="true"
         android:baselineAligned="false"
         android:minWidth="100dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <Button
             android:id="@+id/sound_button"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="1.81"
+            android:background="@drawable/sound_icon"
+            android:elegantTextHeight="false"
             android:onClick="soundClick"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/question_image"
@@ -143,17 +147,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="48sp" />
 
-    <!--<FrameLayout
+    <FrameLayout
         android:id="@+id/foreground"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/white"
-        android:visibility="invisible">
+        android:visibility="visible">
 
-        <Space
+    <Space
             android:layout_width="6dp"
             android:layout_height="6dp" />
-    </FrameLayout>-->
+    </FrameLayout>
 
 </RelativeLayout>
 
