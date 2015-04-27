@@ -55,7 +55,7 @@ def creardatabase():
 #funcion para mostrar los elementos en una ventana
 def mostrar():
     text.delete(0, END)#borramos todo lo que tiene
-    cursor = conn.execute("SELECT id,question,ca,a1,a2,a3,genero,sound_name,imagen_name from LIGHTQUIZ");
+    cursor = conn.execute("SELECT id,question,ca,a1,a2,a3,category,sound_name,imagen_name from LIGHTQUIZ");
     for row in cursor:
 		text.insert(END, "ID =" + str(row[0]));
 		text.insert(END, "QUESTION= "+row[1]);
