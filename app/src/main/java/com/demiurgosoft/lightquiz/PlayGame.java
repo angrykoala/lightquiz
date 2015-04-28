@@ -33,6 +33,7 @@ public class PlayGame extends ActionBarActivity {
     private ImageView correctImg;
     private ImageView wrongImg;
     private ImageView questionImg;
+    private TextView questionText;
     private Button soundButton;
     private TextView pointsText;
     private TextView lifeText;
@@ -147,17 +148,27 @@ public class PlayGame extends ActionBarActivity {
     private void setQuestion() {
         buttonsActive(true);
         Question quest = generator.getQuestion();//get a randomized question
+
         if (!quest.validQuestion()) throw new RuntimeException("Invalid Question");
         this.correctAnswer = quest.correctAnswer;
         for (int i = 0; i < 4; i++)
             answerButtons[i].setText(quest.answers.get(i)); //set questions layout
-        TextView questionText = (TextView) findViewById(R.id.question);
 
-        questionText.setText(quest.text);
         hideAnswerImage();
-        if (quest.hasImage()) showQuestionImage(quest.image);
-        else if (quest.hasSound()) showQuestionSound(quest.sound);
-
+        QuestionType qt = quest.type();
+        switch (qt) {
+            case TEXT:
+                showQuestionText(((TextQuestion) quest).text);
+                break;
+            case IMAGE:
+                showQuestionImage(((ImageQuestion) quest).image);
+                break;
+            case SOUND:
+                showQuestionSound(((SoundQuestion) quest).sound);
+                break;
+            default:
+                throw new RuntimeException("Invalid question type");
+        }
         countdown = new CountDownTimer(questionSeconds * 1000, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -181,7 +192,11 @@ public class PlayGame extends ActionBarActivity {
     private void showQuestionSound(String sound) {
         soundButton.setVisibility(View.VISIBLE);
         ((LightQuiz) this.getApplicationContext()).soundHandler.setQuestionSound(sound);
+    }
 
+    private void showQuestionText(String text) {
+        TextView questionText = (TextView) findViewById(R.id.question);
+        questionText.setText(text);
     }
 
     //next question after som time
@@ -237,6 +252,7 @@ public class PlayGame extends ActionBarActivity {
         lifeText = (TextView) findViewById(R.id.life_text);
         countdownText = (TextView) findViewById(R.id.countdown_text);
         questionImg = (ImageView) findViewById(R.id.question_image);
+        questionText = (TextView) findViewById(R.id.question);
         soundButton = (Button) findViewById(R.id.sound_button);
 
         answerButtons[0] = (Button) findViewById(R.id.answer_1);
