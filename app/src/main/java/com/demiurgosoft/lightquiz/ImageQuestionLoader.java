@@ -6,7 +6,7 @@ import android.database.Cursor;
  * Created by demiurgosoft - 4/28/15
  */
 public class ImageQuestionLoader extends QuestionLoader {
-    public static final String imageColumn = "IMAGE_NAME";
+    public static final String imageColumn = "IMAGEN_NAME";
 
     @Override
     public ImageQuestion load(Cursor cursor) {

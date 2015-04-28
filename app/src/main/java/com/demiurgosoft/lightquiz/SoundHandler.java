@@ -9,17 +9,22 @@ import android.media.MediaPlayer;
 public class SoundHandler {
     Context context;
     private MediaPlayer correctAnswer;
+    private MediaPlayer wrongAnswer;
     private MediaPlayer questionSound;
-    //private static MediaPlayer wrongAnswer;
 
     public SoundHandler(Context context) {
         this.context = context;
         correctAnswer = MediaPlayer.create(context, R.raw.correct_answ);
+        wrongAnswer = MediaPlayer.create(context, R.raw.wrong_answ);
         //   correctAnswer=MediaPlayer.create(context, R.raw.wrong_answ);
     }
 
     public void playCorrectSound() {
         correctAnswer.start();
+    }
+
+    public void playWrongSound() {
+        wrongAnswer.start();
     }
 
     public void playQuestionSound() {

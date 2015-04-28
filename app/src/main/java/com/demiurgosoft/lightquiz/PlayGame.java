@@ -24,7 +24,7 @@ public class PlayGame extends ActionBarActivity {
     private final int questionsDelay = 500;
     private final int questionsPoints = 10;
     private final int questionSeconds = 5;
-    private final String databaseQuery = "SELECT  * FROM LIGHTQUIZ";
+    private final String databaseQuery = "SELECT  * FROM QUESTIONS";
     private final String databaseName = "lq.db";
     private int points = 0;
     private int lives = 10;
@@ -53,7 +53,7 @@ public class PlayGame extends ActionBarActivity {
         progress.setMessage("Loading Database ");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
-        progress.show();
+//        progress.show();
 
 
         new Thread(new Runnable() {
@@ -195,10 +195,15 @@ public class PlayGame extends ActionBarActivity {
     }
 
     private void showQuestionText(String text) {
-        TextView questionText = (TextView) findViewById(R.id.question);
+        questionText.setVisibility(View.VISIBLE);
         questionText.setText(text);
     }
 
+    private void showQuestionImage(String imagename) {
+        int resourceId = this.getResources().getIdentifier("drawable", imagename, "com.demiurgosoft.lightquiz");
+        questionImg.setImageResource(resourceId);
+        questionImg.setVisibility(View.VISIBLE);
+    }
     //next question after som time
     private void nextQuestion() {
             final Handler handler = new Handler();
@@ -223,6 +228,7 @@ public class PlayGame extends ActionBarActivity {
     private void wrongAnswer() {
         correctImg.setVisibility(View.INVISIBLE);
         wrongImg.setVisibility(View.VISIBLE);
+        ((LightQuiz) this.getApplicationContext()).soundHandler.playWrongSound();
         lives--;
         if (lives == 0) gameOver();
     }
@@ -237,12 +243,6 @@ public class PlayGame extends ActionBarActivity {
         for (Button button : answerButtons) {
             button.setClickable(b);
         }
-    }
-
-    private void showQuestionImage(String imagename) {
-        int resourceId = this.getResources().getIdentifier("drawable", imagename, "com.demiurgosoft.lightquiz");
-        questionImg.setImageResource(resourceId);
-        questionImg.setVisibility(View.VISIBLE);
     }
 
     private void loadLayout() {
