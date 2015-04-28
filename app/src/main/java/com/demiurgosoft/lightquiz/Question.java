@@ -1,31 +1,19 @@
 package com.demiurgosoft.lightquiz;
 
-import android.database.Cursor;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  * Created by demiurgosoft - 3/25/15
  */
-public class Question {
-    public String text;
-    public ArrayList<String> answers;
-    public int correctAnswer; //from 1 to 4
+public abstract class Question {
+    public ArrayList<String> answers = new ArrayList();
+    public int correctAnswer = -1; //from 1 to 4
 
-    public String sound;
-    public String image;
 
-    public Question() {
-        correctAnswer = -1;
-        answers = new ArrayList<>();
-    }
+    public abstract QuestionType type();
 
-    public boolean validQuestion() {
+    public abstract boolean validQuestion(); /*{
         boolean b = true;
         if (text.length() == 0) b = false;
         if (answers.size() != 4) b = false;
@@ -34,10 +22,10 @@ public class Question {
         }
         if (correctAnswer < 1 || correctAnswer > 4) b = false;
         return b;
-    }
+    }*/
 
-    public void readCursor(Cursor cursor) {
-        this.correctAnswer = 1;
+   /* public abstract void readCursor(Cursor cursor);{
+       /* this.correctAnswer = 1;
         text = cursor.getString(cursor.getColumnIndex("QUESTION")); //columna question
         answers.add(cursor.getString(cursor.getColumnIndex("CA")));
         answers.add(cursor.getString(cursor.getColumnIndex("A1")));
@@ -47,8 +35,8 @@ public class Question {
 //        sound=cursor.getString(cursor.getColumnIndex("SOUND_NAME"));
 //        image=cursor.getString(cursor.getColumnIndex("IMAGE_NAME"));
 
-    }
-
+    }*/
+/*
     public boolean hasImage() {
         if (image == null || image.isEmpty()) return false;
         else return true;
@@ -58,9 +46,9 @@ public class Question {
         if (sound == null || sound.isEmpty()) return false;
         else return true;
 
-    }
+    }*/
 
-    public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
+   /* public void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, null, "Q");
         int current = 0; //current answer to read
         int eventType = parser.getEventType();
@@ -68,9 +56,6 @@ public class Question {
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 currentTag = parser.getName();
-             /*   if (currentTag.equals("Q")) {
-                    this.difficulty = Integer.parseInt(parser.getAttributeValue(null, "dif"));
-                }*/
             }
             if (eventType == XmlPullParser.TEXT) {
                 switch (currentTag) {
@@ -92,7 +77,7 @@ public class Question {
             }
             eventType = parser.next();
         }
-    }
+    }*/
 
     public void randomize() {
         String s = getCorrectAnswer();

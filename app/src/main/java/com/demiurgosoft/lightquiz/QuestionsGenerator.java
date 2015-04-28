@@ -1,11 +1,8 @@
 package com.demiurgosoft.lightquiz;
 
 import android.database.Cursor;
+import android.util.Log;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,19 +12,16 @@ import java.util.Collections;
 public class QuestionsGenerator {
     private ArrayList<Question> questionsList;
 
-    private boolean ready;
-
     //Default constructor
     public QuestionsGenerator() {
         questionsList = new ArrayList<>();
-        ready = false;
     }
 
     //Constructor from a XMLParser
-    public QuestionsGenerator(XmlPullParser parser) throws IOException, XmlPullParserException {
+    /*public QuestionsGenerator(XmlPullParser parser) throws IOException, XmlPullParserException {
         questionsList = new ArrayList<>();
         loadQuestions(parser);
-    }
+    }*/
 
     public QuestionsGenerator(Cursor dbCursor) {
         questionsList = new ArrayList<>();
@@ -35,8 +29,8 @@ public class QuestionsGenerator {
     }
 
     //true if it have at least one valid question
-    public boolean isReady() {
-        return ready;
+    public boolean empty() {
+        return questionsList.isEmpty();
     }
 
     public void shuffle() {
@@ -49,8 +43,9 @@ public class QuestionsGenerator {
         else {
             Question res = questionsList.get(0);
             questionsList.remove(0);
+            if (res.validQuestion() == false)
+                throw new RuntimeException("Question not valid"); //read another question?
             res.randomize();
-            if (questionsList.isEmpty()) ready = false;
             return res;
         }
     }
@@ -70,7 +65,7 @@ public class QuestionsGenerator {
     }
 
     //Reads questions from xmlpullparser
-    private void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
+   /* private void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
         int eventType = parser.getEventType();
         String currentTag;
         while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -84,34 +79,31 @@ public class QuestionsGenerator {
             }
             eventType = parser.next();
         }
-    }
+    }*/
 
-    //reads from a cursor (database)
-    private void readCursor(Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            Question question;
-            do {
-                question = new Question();
-                question.readCursor(cursor);
-                addQuestion(question);
-            } while (cursor.moveToNext());
-        }
-    }
 
-    private void loadQuestions(XmlPullParser parser) throws XmlPullParserException, IOException {
+    /*private void loadQuestions(XmlPullParser parser) throws XmlPullParserException, IOException {
         readXML(parser);
         shuffle();
         checkReady();
-    }
-
+    }*/
+    //loads question from Cursor (database)
     private void loadQuestions(Cursor cursor) {
-        readCursor(cursor);
-        shuffle();
-        checkReady();
-    }
+        if (cursor.moveToFirst()) {
+            ImageQuestionLoader imageLoader = new ImageQuestionLoader();
+            SoundQuestionLoader soundLoader = new SoundQuestionLoader();
+            TextQuestionLoader textLoader = new TextQuestionLoader();
+            do {
+                if (textLoader.isType(cursor))
+                    addQuestion(textLoader.load(cursor));
+                else if (soundLoader.isType(cursor))
+                    addQuestion(soundLoader.load(cursor));
+                else if (imageLoader.isType(cursor))
+                    addQuestion(imageLoader.load(cursor));
+                else Log.d("Question Generator", "Question type not found");
 
-    private void checkReady() {
-        if (this.size() >= 1 && questionsList.get(0).validQuestion())
-            ready = true;
+            } while (cursor.moveToNext());
+        }
+        shuffle();
     }
 }
