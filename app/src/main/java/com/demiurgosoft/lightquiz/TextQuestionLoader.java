@@ -6,7 +6,6 @@ import android.database.Cursor;
  * Created by demiurgosoft - 4/28/15
  */
 public class TextQuestionLoader extends QuestionLoader {
-    public static final String textColumn = "QUESTION";
 
     @Override
     public TextQuestion load(Cursor cursor) {

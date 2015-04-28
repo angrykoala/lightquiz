@@ -5,6 +5,7 @@ package com.demiurgosoft.lightquiz;
  */
 public class SoundQuestion extends Question {
     public String sound;
+    public String text;
 
     @Override
     public QuestionType type() {

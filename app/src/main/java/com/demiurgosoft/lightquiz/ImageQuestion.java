@@ -5,6 +5,7 @@ package com.demiurgosoft.lightquiz;
  */
 public class ImageQuestion extends Question {
     public String image;
+    public String text;
 
     @Override
     public QuestionType type() {

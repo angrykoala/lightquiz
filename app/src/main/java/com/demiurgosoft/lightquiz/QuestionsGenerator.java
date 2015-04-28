@@ -94,12 +94,13 @@ public class QuestionsGenerator {
             SoundQuestionLoader soundLoader = new SoundQuestionLoader();
             TextQuestionLoader textLoader = new TextQuestionLoader();
             do {
-                if (textLoader.isType(cursor))
-                    addQuestion(textLoader.load(cursor));
-                else if (soundLoader.isType(cursor))
+                if (soundLoader.isType(cursor))
                     addQuestion(soundLoader.load(cursor));
                 else if (imageLoader.isType(cursor))
                     addQuestion(imageLoader.load(cursor));
+                else if (textLoader.isType(cursor))
+                    addQuestion(textLoader.load(cursor));
+
                 else Log.d("Question Generator", "Question type not found");
 
             } while (cursor.moveToNext());

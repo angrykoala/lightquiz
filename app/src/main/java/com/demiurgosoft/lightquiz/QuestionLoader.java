@@ -6,6 +6,7 @@ import android.database.Cursor;
  * Created by demiurgosoft - 4/28/15
  */
 public abstract class QuestionLoader {
+    public static final String textColumn = "QUESTION";
     protected final String correctAnswer = "CA";
     protected final String answer2 = "A1";
     protected final String answer3 = "A2";
