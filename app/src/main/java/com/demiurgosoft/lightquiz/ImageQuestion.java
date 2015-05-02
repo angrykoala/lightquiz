@@ -14,13 +14,7 @@ public class ImageQuestion extends Question {
 
     @Override
     public boolean validQuestion() {
-        boolean b = true;
-        if (image == null || image.length() == 0) b = false;
-        if (answers.size() != 4) b = false;
-        for (int i = 0; i < 4; i++) {
-            if (answers.get(i).length() == 0) b = false;
-        }
-        if (correctAnswer < 1 || correctAnswer > 4) b = false;
-        return b;
+        if (image == null || image.length() == 0) return false;
+        else return super.validQuestion();
     }
 }

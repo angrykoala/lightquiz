@@ -11,7 +11,7 @@ public class TextQuestionLoader extends QuestionLoader {
     public TextQuestion load(Cursor cursor) {
         TextQuestion question = new TextQuestion();
         loadAnswers(cursor, question);
-        question.text = cursor.getString(cursor.getColumnIndex(textColumn));
+        loadText(cursor, question);
         return question;
     }
 

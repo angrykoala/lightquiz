@@ -32,7 +32,8 @@ public class SoundHandler {
     }
 
     public void setQuestionSound(String soundname) {
-        int resourceId = context.getResources().getIdentifier("raw", soundname, "com.demiurgosoft.lightquiz");
+
+        int resourceId = context.getResources().getIdentifier(soundname, "raw", context.getPackageName());
         questionSound = MediaPlayer.create(context, resourceId);
 
     }

@@ -13,7 +13,7 @@ public class SoundQuestionLoader extends QuestionLoader {
         SoundQuestion question = new SoundQuestion();
         loadAnswers(cursor, question);
         question.sound = cursor.getString(cursor.getColumnIndex(soundColumn));
-        question.text = cursor.getString(cursor.getColumnIndex(textColumn));
+        loadText(cursor, question);
         return question;
     }
 

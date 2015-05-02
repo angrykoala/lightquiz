@@ -9,20 +9,22 @@ import java.util.Collections;
 public abstract class Question {
     public ArrayList<String> answers = new ArrayList();
     public int correctAnswer = -1; //from 1 to 4
+    public String text = null;
 
 
     public abstract QuestionType type();
 
-    public abstract boolean validQuestion(); /*{
-        boolean b = true;
-        if (text.length() == 0) b = false;
-        if (answers.size() != 4) b = false;
-        for (int i = 0; i < 4; i++) {
-            if (answers.get(i).length() == 0) b = false;
+    public boolean validQuestion() {
+        if (text == null || text.length() == 0) return false;
+        else if (answers.size() != 4) return false;
+        else if (correctAnswer < 1 || correctAnswer > 4) return false;
+        else {
+            for (int i = 0; i < 4; i++) {
+                if (answers.get(i).length() == 0) return false;
+            }
         }
-        if (correctAnswer < 1 || correctAnswer > 4) b = false;
-        return b;
-    }*/
+        return true;
+    }
 
    /* public abstract void readCursor(Cursor cursor);{
        /* this.correctAnswer = 1;

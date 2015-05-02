@@ -13,7 +13,7 @@ public class ImageQuestionLoader extends QuestionLoader {
         ImageQuestion question = new ImageQuestion();
         loadAnswers(cursor, question);
         question.image = cursor.getString(cursor.getColumnIndex(imageColumn));
-        question.text = cursor.getString(cursor.getColumnIndex(textColumn));
+        loadText(cursor, question);
         return question;
     }
 

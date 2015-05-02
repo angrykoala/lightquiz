@@ -25,4 +25,8 @@ public abstract class QuestionLoader {
         question.answers.add(cursor.getString(cursor.getColumnIndex(answer4)));
     }
 
+    protected void loadText(Cursor cursor, Question question) {
+        question.text = cursor.getString(cursor.getColumnIndex(textColumn));
+    }
+
 }

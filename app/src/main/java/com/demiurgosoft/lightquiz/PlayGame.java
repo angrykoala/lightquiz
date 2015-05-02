@@ -53,7 +53,7 @@ public class PlayGame extends ActionBarActivity {
         progress.setMessage("Loading Database ");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
-//        progress.show();
+        progress.show();
 
 
         new Thread(new Runnable() {
@@ -101,6 +101,12 @@ public class PlayGame extends ActionBarActivity {
         gameOver();
     }
 
+    @Override
+    public void onPause() {
+        // this.finish();
+
+    }
+
     //an answer was clicked
     public void answerClicked(View view) {
         countdown.cancel();
@@ -125,6 +131,7 @@ public class PlayGame extends ActionBarActivity {
         if (correctAnswer == answer) correctAnswer();
         else wrongAnswer();
         updateTexts();
+        hideQuestionMultimedia();
         nextQuestion();
     }
 
@@ -146,6 +153,7 @@ public class PlayGame extends ActionBarActivity {
     }
 
     private void setQuestion() {
+        hideQuestionMultimedia();
         buttonsActive(true);
         Question quest = generator.getQuestion();//get a randomized question
 
@@ -155,10 +163,11 @@ public class PlayGame extends ActionBarActivity {
             answerButtons[i].setText(quest.answers.get(i)); //set questions layout
 
         hideAnswerImage();
+        questionText.setText(quest.text);
         QuestionType qt = quest.type();
         switch (qt) {
             case TEXT:
-                showQuestionText(((TextQuestion) quest).text);
+                //showQuestionText(((TextQuestion) quest).text);
                 break;
             case IMAGE:
                 showQuestionImage(((ImageQuestion) quest).image);
@@ -194,15 +203,15 @@ public class PlayGame extends ActionBarActivity {
         ((LightQuiz) this.getApplicationContext()).soundHandler.setQuestionSound(sound);
     }
 
-    private void showQuestionText(String text) {
-        questionText.setVisibility(View.VISIBLE);
-        questionText.setText(text);
-    }
-
     private void showQuestionImage(String imagename) {
-        int resourceId = this.getResources().getIdentifier("drawable", imagename, "com.demiurgosoft.lightquiz");
+        int resourceId = this.getResources().getIdentifier(imagename, "drawable", this.getPackageName());
         questionImg.setImageResource(resourceId);
         questionImg.setVisibility(View.VISIBLE);
+    }
+
+    private void hideQuestionMultimedia() {
+        questionImg.setVisibility(View.INVISIBLE);
+        soundButton.setVisibility(View.INVISIBLE);
     }
     //next question after som time
     private void nextQuestion() {
@@ -271,10 +280,11 @@ public class PlayGame extends ActionBarActivity {
     }
 
     private void gameOver() {
-        this.finish();
+        countdown.cancel();
         buttonsActive(false);
         Intent intent = new Intent(this, GameOver.class);
         intent.putExtra("Score", points);
+        this.finish();
         startActivity(intent);
     }
 
@@ -298,10 +308,9 @@ public class PlayGame extends ActionBarActivity {
         toast.show();
         View fore = findViewById(R.id.foreground);
         fore.setVisibility(View.INVISIBLE);
-        questionImg.setVisibility(View.INVISIBLE);
-        soundButton.setVisibility(View.INVISIBLE);
-
+        hideQuestionMultimedia();
     }
+
 
     private void loadQuestions() throws IOException {
         SQLiteHelper database = new SQLiteHelper(this, databaseName);
