@@ -63,9 +63,9 @@ public class GameOver extends ActionBarActivity {
     public void buttonClick(View view) {
         switch (view.getId()) {
             case R.id.restart_button:
-                this.finish();
                 Intent intent = new Intent(this, PlayGame.class);
                 startActivity(intent);
+                this.finish();
 
                 break;
             case R.id.return_button:

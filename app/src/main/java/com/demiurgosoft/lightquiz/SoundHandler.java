@@ -10,7 +10,7 @@ public class SoundHandler {
     Context context;
     private MediaPlayer correctAnswer;
     private MediaPlayer wrongAnswer;
-    private MediaPlayer questionSound;
+    private MediaPlayer questionSound = null;
 
     public SoundHandler(Context context) {
         this.context = context;
@@ -28,14 +28,17 @@ public class SoundHandler {
     }
 
     public void playQuestionSound() {
+        stopQuestionSound();
         questionSound.start();
     }
 
-    public void setQuestionSound(String soundname) {
+    public void stopQuestionSound() {
+        if (questionSound != null && questionSound.isPlaying()) questionSound.stop();
 
+    }
+    public void setQuestionSound(String soundname) {
         int resourceId = context.getResources().getIdentifier(soundname, "raw", context.getPackageName());
         questionSound = MediaPlayer.create(context, resourceId);
-
     }
 
 }

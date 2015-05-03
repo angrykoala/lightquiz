@@ -101,12 +101,6 @@ public class PlayGame extends ActionBarActivity {
         gameOver();
     }
 
-    @Override
-    public void onPause() {
-        // this.finish();
-
-    }
-
     //an answer was clicked
     public void answerClicked(View view) {
         countdown.cancel();
@@ -131,11 +125,11 @@ public class PlayGame extends ActionBarActivity {
         if (correctAnswer == answer) correctAnswer();
         else wrongAnswer();
         updateTexts();
-        hideQuestionMultimedia();
         nextQuestion();
     }
 
     public void soundClick(View view) {
+        Log.d("PlayGame", "sound clicked");
         switch (view.getId()) {
             case R.id.sound_button:
                 playSound();
@@ -200,6 +194,7 @@ public class PlayGame extends ActionBarActivity {
 
     private void showQuestionSound(String sound) {
         soundButton.setVisibility(View.VISIBLE);
+        soundButton.setClickable(true);
         ((LightQuiz) this.getApplicationContext()).soundHandler.setQuestionSound(sound);
     }
 
@@ -212,6 +207,8 @@ public class PlayGame extends ActionBarActivity {
     private void hideQuestionMultimedia() {
         questionImg.setVisibility(View.INVISIBLE);
         soundButton.setVisibility(View.INVISIBLE);
+        ((LightQuiz) this.getApplicationContext()).soundHandler.stopQuestionSound();
+        soundButton.setClickable(false);
     }
     //next question after som time
     private void nextQuestion() {
@@ -280,12 +277,13 @@ public class PlayGame extends ActionBarActivity {
     }
 
     private void gameOver() {
+        hideQuestionMultimedia();
         countdown.cancel();
         buttonsActive(false);
         Intent intent = new Intent(this, GameOver.class);
         intent.putExtra("Score", points);
-        this.finish();
         startActivity(intent);
+        this.finish();
     }
 
     //reloads questions from xml
@@ -308,7 +306,6 @@ public class PlayGame extends ActionBarActivity {
         toast.show();
         View fore = findViewById(R.id.foreground);
         fore.setVisibility(View.INVISIBLE);
-        hideQuestionMultimedia();
     }
 
 

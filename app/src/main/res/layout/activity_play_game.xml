@@ -8,6 +8,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".com.demiurgosoft.lightquiz.PlayGame">
 
+    <ImageView
+        android:id="@+id/question_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:maxHeight="250dp"
+        android:maxWidth="250dp"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
@@ -18,27 +29,6 @@
         android:minWidth="100dp"
         android:orientation="vertical"
         android:weightSum="1">
-
-        <Button
-            android:id="@+id/sound_button"
-            android:layout_width="fill_parent"
-            android:layout_height="75dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1.81"
-            android:background="@drawable/sound_icon"
-            android:elegantTextHeight="false"
-            android:onClick="soundClick"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/question_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/linearLayout"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_horizontal"
-            android:visibility="invisible" />
 
         <Button
             android:id="@+id/answer_1"
@@ -146,6 +136,17 @@
         android:text="5"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="48sp" />
+
+    <Button
+        android:id="@+id/sound_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/question_image"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/sound_icon"
+        android:onClick="soundClick"
+        android:visibility="invisible" />
 
     <FrameLayout
         android:id="@+id/foreground"
