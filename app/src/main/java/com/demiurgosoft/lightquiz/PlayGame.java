@@ -99,6 +99,7 @@ public class PlayGame extends ActionBarActivity {
     public void onPause() {
         super.onPause();
         countdown.cancel();
+        hideQuestionMultimedia();
         this.finish();
         // gameOver();
 
