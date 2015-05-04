@@ -23,7 +23,7 @@ import java.io.IOException;
 public class PlayGame extends ActionBarActivity {
     private final int questionsDelay = 500;
     private final int questionsPoints = 10;
-    private final int questionSeconds = 5;
+    private final int questionSeconds = 8;
     private final String databaseQuery = "SELECT  * FROM QUESTIONS";
     private final String databaseName = "lq.db";
     private int points = 0;
@@ -96,6 +96,16 @@ public class PlayGame extends ActionBarActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        countdown.cancel();
+        this.finish();
+        // gameOver();
+
+    }
+
+
+    @Override
     public void onBackPressed() {
         // this.finish();
         gameOver();
@@ -129,7 +139,6 @@ public class PlayGame extends ActionBarActivity {
     }
 
     public void soundClick(View view) {
-        Log.d("PlayGame", "sound clicked");
         switch (view.getId()) {
             case R.id.sound_button:
                 playSound();
@@ -168,6 +177,7 @@ public class PlayGame extends ActionBarActivity {
                 break;
             case SOUND:
                 showQuestionSound(((SoundQuestion) quest).sound);
+                playSound();
                 break;
             default:
                 throw new RuntimeException("Invalid question type");
@@ -185,6 +195,7 @@ public class PlayGame extends ActionBarActivity {
 
             @Override
             public void onFinish() {
+                buttonsActive(false);
                 wrongAnswer();
                 updateTexts();
                 nextQuestion();
