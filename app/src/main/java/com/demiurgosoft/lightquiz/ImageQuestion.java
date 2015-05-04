@@ -5,7 +5,7 @@ package com.demiurgosoft.lightquiz;
  */
 public class ImageQuestion extends Question {
     public String image;
-    public String text;
+
 
     @Override
     public QuestionType type() {
@@ -13,8 +13,21 @@ public class ImageQuestion extends Question {
     }
 
     @Override
-    public boolean validQuestion() {
-        if (image == null || image.length() == 0) return false;
-        else return super.validQuestion();
+    public void load() {
+        RawQuestion raw = questionList.getRawQuestion(type());
+        if (raw != null) {
+            loadText(raw);
+            loadAnswers(raw);
+            loadImage(raw);
+        }
+    }
+
+    @Override
+    public boolean isValid() {
+        return !(image == null || image.length() == 0) && super.isValid();
+    }
+
+    private void loadImage(RawQuestion question) {
+        this.image = question.image;
     }
 }

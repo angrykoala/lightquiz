@@ -7,6 +7,7 @@ import android.app.Application;
  * Created by demiurgosoft - 4/24/15
  */
 public class LightQuiz extends Application {
+    //"Global" Classes
     public Player player;
     public SoundHandler soundHandler;
 

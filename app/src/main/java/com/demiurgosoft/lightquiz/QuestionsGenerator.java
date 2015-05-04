@@ -1,8 +1,5 @@
 package com.demiurgosoft.lightquiz;
 
-import android.database.Cursor;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,19 +12,15 @@ public class QuestionsGenerator {
     //Default constructor
     public QuestionsGenerator() {
         questionsList = new ArrayList<>();
+        loadQuestions();
+        shuffle();
     }
 
-    //Constructor from a XMLParser
-    /*public QuestionsGenerator(XmlPullParser parser) throws IOException, XmlPullParserException {
+    public QuestionsGenerator(int number) {
         questionsList = new ArrayList<>();
-        loadQuestions(parser);
-    }*/
-
-    public QuestionsGenerator(Cursor dbCursor) {
-        questionsList = new ArrayList<>();
-        if (dbCursor != null) loadQuestions(dbCursor);
+        loadQuestions(number);
+        shuffle();
     }
-
     //true if it have at least one valid question
     public boolean empty() {
         return questionsList.isEmpty();
@@ -43,7 +36,7 @@ public class QuestionsGenerator {
         else {
             Question res = questionsList.get(0);
             questionsList.remove(0);
-            if (res.validQuestion() == false)
+            if (!res.isValid())
                 throw new RuntimeException("Question not valid"); //read another question?
             res.randomize();
             return res;
@@ -52,7 +45,7 @@ public class QuestionsGenerator {
 
     //adds a question if valid
     private boolean addQuestion(Question q) {
-        boolean valid = q.validQuestion();
+        boolean valid = q.isValid();
         if (valid) {
             questionsList.add(q);
         }
@@ -64,47 +57,39 @@ public class QuestionsGenerator {
         return questionsList.size();
     }
 
-    //Reads questions from xmlpullparser
-   /* private void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
-        int eventType = parser.getEventType();
-        String currentTag;
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            if (eventType == XmlPullParser.START_TAG) {
-                currentTag = parser.getName();
-                if (currentTag.equals("Q")) {
-                    Question new_q = new Question();
-                    new_q.readXML(parser);
-                    addQuestion(new_q);
-                }
-            }
-            eventType = parser.next();
-        }
-    }*/
 
+    private void loadQuestions(int questionNumber) {
 
-    /*private void loadQuestions(XmlPullParser parser) throws XmlPullParserException, IOException {
-        readXML(parser);
-        shuffle();
-        checkReady();
-    }*/
-    //loads question from Cursor (database)
-    private void loadQuestions(Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            ImageQuestionLoader imageLoader = new ImageQuestionLoader();
-            SoundQuestionLoader soundLoader = new SoundQuestionLoader();
-            TextQuestionLoader textLoader = new TextQuestionLoader();
+        if (questionNumber > Question.getQuestionSize())
+            questionNumber = Question.getQuestionSize();
+        if (questionNumber <= 0) throw new RuntimeException("raw questions empty");
+
+        ImageQuestionLoader imageLoader = new ImageQuestionLoader();
+        SoundQuestionLoader soundLoader = new SoundQuestionLoader();
+        TextQuestionLoader textLoader = new TextQuestionLoader();
+        QuestionType type;
+
+        for (int i = 0; i < questionNumber; i++) {
+            Question quest = null;
             do {
-                if (soundLoader.isType(cursor))
-                    addQuestion(soundLoader.load(cursor));
-                else if (imageLoader.isType(cursor))
-                    addQuestion(imageLoader.load(cursor));
-                else if (textLoader.isType(cursor))
-                    addQuestion(textLoader.load(cursor));
-
-                else Log.d("Question Generator", "Question type not found");
-
-            } while (cursor.moveToNext());
+                type = QuestionType.getRandomType();
+                switch (type) {
+                    case IMAGE:
+                        quest = imageLoader.load();
+                        break;
+                    case SOUND:
+                        quest = soundLoader.load();
+                        break;
+                    case TEXT:
+                        quest = textLoader.load();
+                        break;
+                }
+            } while (quest == null);
+            addQuestion(quest);
         }
-        shuffle();
+        }
+
+    private void loadQuestions() {
+        this.loadQuestions(Question.getQuestionSize());
     }
-}
+    }

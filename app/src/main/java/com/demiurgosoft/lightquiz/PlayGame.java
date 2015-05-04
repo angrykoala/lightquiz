@@ -161,13 +161,13 @@ public class PlayGame extends ActionBarActivity {
         buttonsActive(true);
         Question quest = generator.getQuestion();//get a randomized question
 
-        if (!quest.validQuestion()) throw new RuntimeException("Invalid Question");
-        this.correctAnswer = quest.correctAnswer;
+        if (!quest.isValid()) throw new RuntimeException("Invalid Question");
+        this.correctAnswer = quest.getCorrectAnswer();
         for (int i = 0; i < 4; i++)
-            answerButtons[i].setText(quest.answers.get(i)); //set questions layout
+            answerButtons[i].setText(quest.getAnswer(i)); //set questions layout
 
         hideAnswerImage();
-        questionText.setText(quest.text);
+        questionText.setText(quest.getText());
         QuestionType qt = quest.type();
         switch (qt) {
             case TEXT:
@@ -326,12 +326,13 @@ public class PlayGame extends ActionBarActivity {
         if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
         else {
             Cursor cursor = database.query(databaseQuery);
-            this.generator = new QuestionsGenerator(cursor);
+            Question.questionList = new QuestionSet(cursor);
         }
         database.close();
+        this.generator = new QuestionsGenerator();
     }
 
-    private void loadQuestions(String genre) throws IOException {
+  /*  private void loadQuestions(String genre) throws IOException {
         SQLiteHelper database = new SQLiteHelper(this, databaseName);
         if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
         else {
@@ -339,5 +340,5 @@ public class PlayGame extends ActionBarActivity {
             this.generator = new QuestionsGenerator(cursor);
         }
         database.close();
-    }
+    }*/
 }
