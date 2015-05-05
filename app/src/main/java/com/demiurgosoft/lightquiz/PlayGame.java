@@ -2,12 +2,10 @@ package com.demiurgosoft.lightquiz;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,15 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 
 public class PlayGame extends ActionBarActivity {
     private final int questionsDelay = 500;
     private final int questionsPoints = 10;
     private final int questionSeconds = 8;
-    private final String databaseQuery = "SELECT  * FROM QUESTIONS";
-    private final String databaseName = "lq.db";
+
     private int points = 0;
     private int lives = 10;
     private int correctAnswer;
@@ -50,19 +45,15 @@ public class PlayGame extends ActionBarActivity {
         setContentView(R.layout.activity_play_game);
 
         progress = new ProgressDialog(this);
-        progress.setMessage("Loading Database ");
+        progress.setMessage("Loading Questions");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.show();
 
-
         new Thread(new Runnable() {
             public void run() {
-                try {
-                    loadQuestions();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                loadDatabase();
+                loadQuestions();
                 loadLayout();
 
 
@@ -321,14 +312,11 @@ public class PlayGame extends ActionBarActivity {
     }
 
 
-    private void loadQuestions() throws IOException {
-        SQLiteHelper database = new SQLiteHelper(this, databaseName);
-        if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
-        else {
-            Cursor cursor = database.query(databaseQuery);
-            Question.questionList = new QuestionSet(cursor);
-        }
-        database.close();
+    private void loadDatabase() {
+        if (Question.questionsReady()) ((LightQuiz) this.getApplicationContext()).loadDatabase();
+    }
+
+    private void loadQuestions() {
         this.generator = new QuestionsGenerator();
     }
 

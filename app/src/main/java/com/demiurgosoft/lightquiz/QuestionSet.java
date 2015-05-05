@@ -80,6 +80,13 @@ public class QuestionSet {
         return imageQuestions.size() + soundQuestions.size() + textQuestions.size();
     }
 
+    public void clear() {
+        imageindex = soundindex = textindex = 0;
+        imageQuestions.clear();
+        soundQuestions.clear();
+        textQuestions.clear();
+    }
+
     public void restart() {
         imageindex = soundindex = textindex = 0;
         Collections.shuffle(imageQuestions);
