@@ -42,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        ((LightQuiz) this.getApplicationContext()).clearQuestions();
         updateHighScore();
     }
 

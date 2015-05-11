@@ -38,6 +38,13 @@ public class QuestionSet {
         restart();
     }
 
+    public void clear() {
+        imageQuestions.clear();
+        soundQuestions.clear();
+        textQuestions.clear();
+        imageindex = soundindex = textindex = 0;
+
+    }
 
     //Example of question loader from XML file
    /* private void readXML(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -62,19 +69,6 @@ public class QuestionSet {
         shuffle();
         checkReady();
     }*/
-
-    public int size(QuestionType type) {
-        switch (type) {
-            case IMAGE:
-                return imageQuestions.size();
-            case SOUND:
-                return soundQuestions.size();
-            case TEXT:
-                return textQuestions.size();
-            default:
-                return 0;
-        }
-    }
 
     public int size() {
         return imageQuestions.size() + soundQuestions.size() + textQuestions.size();

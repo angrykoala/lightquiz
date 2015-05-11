@@ -23,6 +23,10 @@ public abstract class Question {
         return questionList.size();
     }
 
+    public static boolean isQuestionListReady() {
+        return questionList != null;
+    }
+
     public abstract QuestionType type();
 
     public abstract void load();

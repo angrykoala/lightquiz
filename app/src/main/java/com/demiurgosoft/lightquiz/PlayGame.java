@@ -2,12 +2,10 @@ package com.demiurgosoft.lightquiz;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,8 +22,6 @@ public class PlayGame extends ActionBarActivity {
     private final int questionsDelay = 500;
     private final int questionsPoints = 10;
     private final int questionSeconds = 8;
-    private final String databaseQuery = "SELECT  * FROM QUESTIONS";
-    private final String databaseName = "lq.db";
     private int points = 0;
     private int lives = 10;
     private int correctAnswer;
@@ -322,13 +318,15 @@ public class PlayGame extends ActionBarActivity {
 
 
     private void loadQuestions() throws IOException {
-        SQLiteHelper database = new SQLiteHelper(this, databaseName);
-        if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
+      /*  SQLiteHelper database = new SQLiteHelper(this, databaseName);
+        if (!database.openDataBase())  throw new RuntimeException("database not loaded");
         else {
             Cursor cursor = database.query(databaseQuery);
             Question.questionList = new QuestionSet(cursor);
         }
-        database.close();
+        database.close();*/
+        if (!Question.isQuestionListReady())
+            ((LightQuiz) this.getApplicationContext()).loadRawQuestions();
         this.generator = new QuestionsGenerator();
     }
 
