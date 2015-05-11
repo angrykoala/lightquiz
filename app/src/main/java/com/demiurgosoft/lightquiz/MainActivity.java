@@ -43,7 +43,6 @@ public class MainActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         updateHighScore();
-        Question.clearQuestionList();
     }
 
     @Override

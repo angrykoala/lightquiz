@@ -19,17 +19,6 @@ public abstract class Question {
         questionList = new QuestionSet(cursor);
     }
 
-    public static boolean questionsReady() {
-        return questionList != null && questionList.size() > 0;
-    }
-
-    public static void clearQuestionList() {
-        if (questionList != null) {
-            questionList.clear();
-            questionList = null;
-        }
-    }
-
     public static int getQuestionSize() {
         return questionList.size();
     }
