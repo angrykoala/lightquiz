@@ -87,6 +87,7 @@ public class QuestionsGenerator {
             } while (quest == null);
             addQuestion(quest);
         }
+        Question.questionList.restart();
         }
 
     private void loadQuestions() {

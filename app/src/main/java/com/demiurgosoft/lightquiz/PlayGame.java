@@ -40,16 +40,23 @@ public class PlayGame extends ActionBarActivity {
     private QuestionsGenerator generator;
     private ProgressDialog progress;
 
+    private String genreSelection = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
+
+        Intent intent = getIntent();
+        genreSelection = intent.getStringExtra("Genre");
+
 
         progress = new ProgressDialog(this);
         progress.setMessage("Loading Database ");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.show();
+
 
 
         new Thread(new Runnable() {
@@ -285,7 +292,10 @@ public class PlayGame extends ActionBarActivity {
     }
 
     private void gameOver() {
-        hideQuestionMultimedia();
+        //hideQuestionMultimedia();
+        ((LightQuiz) this.getApplicationContext()).soundHandler.stopQuestionSound();
+        soundButton.setClickable(false);
+
         countdown.cancel();
         buttonsActive(false);
         Intent intent = new Intent(this, GameOver.class);
@@ -318,15 +328,9 @@ public class PlayGame extends ActionBarActivity {
 
 
     private void loadQuestions() throws IOException {
-      /*  SQLiteHelper database = new SQLiteHelper(this, databaseName);
-        if (!database.openDataBase())  throw new RuntimeException("database not loaded");
-        else {
-            Cursor cursor = database.query(databaseQuery);
-            Question.questionList = new QuestionSet(cursor);
+        if (!Question.isQuestionListReady()) {
+            ((LightQuiz) this.getApplicationContext()).loadRawQuestions(genreSelection);
         }
-        database.close();*/
-        if (!Question.isQuestionListReady())
-            ((LightQuiz) this.getApplicationContext()).loadRawQuestions();
         this.generator = new QuestionsGenerator();
     }
 

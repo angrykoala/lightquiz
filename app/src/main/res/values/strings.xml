@@ -2,6 +2,7 @@
     <!-- App texts -->
     <string name="app_name">LightQuiz</string>
     <string name="start_button">Start Game</string>
+    <string name="other_games_button">Other Games</string>
 
     <string name="return_button">Return</string>
     <string name="restart_button">Restart</string>

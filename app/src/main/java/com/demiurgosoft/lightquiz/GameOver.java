@@ -47,6 +47,7 @@ public class GameOver extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
+        //((LightQuiz) this.getApplicationContext()).clearQuestions();
         this.finish();
     }
     //shows gameOver information
@@ -66,9 +67,9 @@ public class GameOver extends ActionBarActivity {
                 Intent intent = new Intent(this, PlayGame.class);
                 startActivity(intent);
                 this.finish();
-
                 break;
             case R.id.return_button:
+                // ((LightQuiz) this.getApplicationContext()).clearQuestions();
                 this.finish();
                 break;
             default:

@@ -30,4 +30,24 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40sp" />
 
+    <Button
+        android:id="@+id/other_game_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/space2"
+        android:layout_centerHorizontal="true"
+        android:onClick="startGame"
+        android:text="@string/other_games_button"
+        android:textSize="20sp" />
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignEnd="@+id/highscore"
+        android:layout_alignLeft="@+id/other_game_button"
+        android:layout_alignRight="@+id/highscore"
+        android:layout_alignStart="@+id/other_game_button"
+        android:layout_below="@+id/start_button" />
+
 </RelativeLayout>

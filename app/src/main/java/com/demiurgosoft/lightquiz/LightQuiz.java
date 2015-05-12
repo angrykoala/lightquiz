@@ -33,6 +33,18 @@ public class LightQuiz extends Application {
         database.close();
     }
 
+    public void loadRawQuestions(String genre) throws IOException {
+        SQLiteHelper database = new SQLiteHelper(this, databaseName);
+        if (!database.openDataBase()) throw new RuntimeException("database not loaded");
+        else {
+            String query = databaseQuery;
+            if (genre != null) query = query + " WHERE CATEGORY=\"" + genre + "\"";
+            Cursor cursor = database.query(query);
+            Question.questionList = new QuestionSet(cursor);
+        }
+        database.close();
+    }
+
     public void clearQuestions() {
         if (Question.questionList != null) Question.questionList.clear();
         Question.questionList = null;

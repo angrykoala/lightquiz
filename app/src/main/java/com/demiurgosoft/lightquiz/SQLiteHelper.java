@@ -48,6 +48,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public Cursor query(String dbquery) {
+        Log.d("sqlhelper", dbquery);
         SQLiteDatabase db = this.getReadableDatabase(); //getWritableDatabase()??
         return db.rawQuery(dbquery, null);
     }

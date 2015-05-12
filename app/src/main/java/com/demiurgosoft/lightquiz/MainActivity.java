@@ -74,17 +74,29 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startGame(View view) {
+        Intent intent;
         switch (view.getId()) {
-            case com.demiurgosoft.lightquiz.R.id.start_button:
+            case R.id.start_button:
                 // if (generator.isReady()) {
-                Intent intent = new Intent(this, PlayGame.class);
+                intent = new Intent(this, PlayGame.class);
                 startActivity(intent);
                 //  }
+                break;
+            case R.id.other_game_button:
+                String selection = selecGenre();
+                intent = new Intent(this, PlayGame.class);
+                intent.putExtra("Genre", selection);
+                startActivity(intent);
                 break;
             default:
                 throw new RuntimeException("Unknown button ID");
         }
 
+    }
+
+    String selecGenre() {
+        //show an alertdialog with options, see http://developer.android.com/guide/topics/ui/dialogs.html
+        return QuestionGenres.CIENCIAS.toString();
     }
 
     private void updateHighScore() {
