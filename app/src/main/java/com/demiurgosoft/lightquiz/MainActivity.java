@@ -1,5 +1,7 @@
 package com.demiurgosoft.lightquiz;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -74,19 +76,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startGame(View view) {
-        Intent intent;
         switch (view.getId()) {
             case R.id.start_button:
-                // if (generator.isReady()) {
-                intent = new Intent(this, PlayGame.class);
+                Intent intent = new Intent(this, PlayGame.class);
                 startActivity(intent);
-                //  }
                 break;
             case R.id.other_game_button:
-                String selection = selecGenre();
-                intent = new Intent(this, PlayGame.class);
-                intent.putExtra("Genre", selection);
-                startActivity(intent);
+                selecGenre();
                 break;
             default:
                 throw new RuntimeException("Unknown button ID");
@@ -94,9 +90,25 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    String selecGenre() {
-        //show an alertdialog with options, see http://developer.android.com/guide/topics/ui/dialogs.html
-        return QuestionGenres.CIENCIAS.toString();
+    void selecGenre() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_title);
+        String[] genres = QuestionGenre.names();
+        builder.setItems(QuestionGenre.names(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                beginQuizGame(QuestionGenre.names()[which]);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    void beginQuizGame(String genre) {
+        Intent intent = new Intent(this, PlayGame.class);
+        intent.putExtra("Genre", genre);
+        startActivity(intent);
+
     }
 
     private void updateHighScore() {

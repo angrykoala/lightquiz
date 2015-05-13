@@ -22,8 +22,8 @@ public class PlayGame extends ActionBarActivity {
     private final int questionsDelay = 500;
     private final int questionsPoints = 10;
     private final int questionSeconds = 8;
-    private int points = 0;
-    private int lives = 10;
+    private int points;
+    private int lives;
     private int correctAnswer;
     //Layout Stuff
     private ImageView correctImg;
@@ -314,7 +314,7 @@ public class PlayGame extends ActionBarActivity {
     //Starts game
     private void startGame() {
         points = 0;
-        lives = 10;
+        lives = 3;
         buttonsActive(true);
         updateTexts();
         setQuestion();

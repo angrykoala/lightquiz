@@ -11,6 +11,9 @@
     <string name="title_activity_play_game">LightQuiz</string>
     <string name="title_activity_game_result">Result</string>
     <string name="new_highscore">Congratulations\nNew High Score!!!</string>
+    <string name="genre_selection">Select Quiz Genre to play</string>
+    <string name="dialog_title">Quiz Selection</string>
+
 
     <!-- Other Strings -->
     <string name="data_name">PlayerData</string>

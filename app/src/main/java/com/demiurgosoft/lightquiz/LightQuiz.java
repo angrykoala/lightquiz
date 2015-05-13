@@ -38,7 +38,7 @@ public class LightQuiz extends Application {
         if (!database.openDataBase()) throw new RuntimeException("database not loaded");
         else {
             String query = databaseQuery;
-            if (genre != null) query = query + " WHERE CATEGORY=\"" + genre + "\"";
+            if (genre != null) query = query + " WHERE CATEGORY=\"" + genre.toLowerCase() + "\"";
             Cursor cursor = database.query(query);
             Question.questionList = new QuestionSet(cursor);
         }

@@ -148,7 +148,7 @@ e5 = Entry(top, textvariable=v5,width=50)
 e5.grid(row=4, column=1)
 
 l6 = Label(top, text="genero").grid(row=5, column=0)
-e6 = ttk.Combobox(values=["geografia", "ciencias", "arte", "deportes", "cine"])
+e6 = ttk.Combobox(values=["geografia", "ciencias", "arte", "cine"])
 e6.set("Genero")
 e6.configure(width=48)
 e6.grid(row=5, column=1)
