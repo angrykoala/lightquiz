@@ -41,6 +41,7 @@ public class PlayGame extends ActionBarActivity {
     private ProgressDialog progress;
 
     private String genreSelection = null;
+    private boolean gameFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class PlayGame extends ActionBarActivity {
         countdown.cancel();
         hideQuestionMultimedia();
         this.finish();
+        gameFinished = true;
         // gameOver();
 
     }
@@ -156,55 +158,58 @@ public class PlayGame extends ActionBarActivity {
     //set a new question from generator
 
     private void playSound() {
-        ((LightQuiz) this.getApplicationContext()).soundHandler.playQuestionSound();
+        if (!gameFinished)
+            ((LightQuiz) this.getApplicationContext()).soundHandler.playQuestionSound();
     }
 
     private void setQuestion() {
-        hideQuestionMultimedia();
-        buttonsActive(true);
-        Question quest = generator.getQuestion();//get a randomized question
+        if (!gameFinished) {
+            hideQuestionMultimedia();
+            buttonsActive(true);
+            Question quest = generator.getQuestion();//get a randomized question
 
-        if (!quest.isValid()) throw new RuntimeException("Invalid Question");
-        this.correctAnswer = quest.getCorrectAnswer();
-        for (int i = 0; i < 4; i++)
-            answerButtons[i].setText(quest.getAnswer(i)); //set questions layout
+            if (!quest.isValid()) throw new RuntimeException("Invalid Question");
+            this.correctAnswer = quest.getCorrectAnswer();
+            for (int i = 0; i < 4; i++)
+                answerButtons[i].setText(quest.getAnswer(i)); //set questions layout
 
-        hideAnswerImage();
-        questionText.setText(quest.getText());
-        QuestionType qt = quest.type();
-        switch (qt) {
-            case TEXT:
-                //showQuestionText(((TextQuestion) quest).text);
-                break;
-            case IMAGE:
-                showQuestionImage(((ImageQuestion) quest).image);
-                break;
-            case SOUND:
-                showQuestionSound(((SoundQuestion) quest).sound);
-                playSound();
-                break;
-            default:
-                throw new RuntimeException("Invalid question type");
-        }
-        countdown = new CountDownTimer(questionSeconds * 1000, 500) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                countdownText.setText(Integer.toString((int) (millisUntilFinished / 1000) + 1));
+            hideAnswerImage();
+            questionText.setText(quest.getText());
+            QuestionType qt = quest.type();
+            switch (qt) {
+                case TEXT:
+                    //showQuestionText(((TextQuestion) quest).text);
+                    break;
+                case IMAGE:
+                    showQuestionImage(((ImageQuestion) quest).image);
+                    break;
+                case SOUND:
+                    showQuestionSound(((SoundQuestion) quest).sound);
+                    playSound();
+                    break;
+                default:
+                    throw new RuntimeException("Invalid question type");
+            }
+            countdown = new CountDownTimer(questionSeconds * 1000, 500) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    countdownText.setText(Integer.toString((int) (millisUntilFinished / 1000) + 1));
             /* if(millisUntilFinished/1000 == 1) {
                  wrongAnswer();
                  updateTexts();
                  nextQuestion();
              }*/
-            }
+                }
 
-            @Override
-            public void onFinish() {
-                buttonsActive(false);
-                wrongAnswer();
-                updateTexts();
-                nextQuestion();
-            }
-        }.start();
+                @Override
+                public void onFinish() {
+                    buttonsActive(false);
+                    wrongAnswer();
+                    updateTexts();
+                    nextQuestion();
+                }
+            }.start();
+        }
     }
 
     private void showQuestionSound(String sound) {
@@ -217,6 +222,7 @@ public class PlayGame extends ActionBarActivity {
         int resourceId = this.getResources().getIdentifier(imagename, "drawable", this.getPackageName());
         questionImg.setImageResource(resourceId);
         questionImg.setVisibility(View.VISIBLE);
+        //questionImg.setMaxHeight();
     }
 
     private void hideQuestionMultimedia() {
@@ -293,9 +299,9 @@ public class PlayGame extends ActionBarActivity {
 
     private void gameOver() {
         //hideQuestionMultimedia();
+        gameFinished = true;
         ((LightQuiz) this.getApplicationContext()).soundHandler.stopQuestionSound();
         soundButton.setClickable(false);
-
         countdown.cancel();
         buttonsActive(false);
         Intent intent = new Intent(this, GameOver.class);
@@ -315,6 +321,7 @@ public class PlayGame extends ActionBarActivity {
     private void startGame() {
         points = 0;
         lives = 3;
+        gameFinished = false;
         buttonsActive(true);
         updateTexts();
         setQuestion();
