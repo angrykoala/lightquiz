@@ -4,6 +4,8 @@ Each answer inside a Questions has <A> value, the correct answer is tagged with 
 If two <CA> in same questions, last one will be used
 if more than 4 <A> in a questions, only 4 first will be used
 if less than 4 answers for questions or no CA, the question will NOT be loaded
+
+Intended to work on previous versions of LightQuiz
 -->
 <LightQuiz version="0.1">
     <Q>Name of Spain Capital

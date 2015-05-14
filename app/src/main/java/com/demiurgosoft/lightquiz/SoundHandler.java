@@ -3,6 +3,8 @@ package com.demiurgosoft.lightquiz;
 import android.content.Context;
 import android.media.MediaPlayer;
 
+import java.io.IOException;
+
 /**
  * Created by demiurgosoft - 4/10/15
  */
@@ -33,7 +35,14 @@ public class SoundHandler {
     }
 
     public void stopQuestionSound() {
-        if (questionSound != null && questionSound.isPlaying()) questionSound.stop();
+        if (questionSound != null && questionSound.isPlaying()) {
+            questionSound.stop();
+            try {
+                questionSound.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
     public void setQuestionSound(String soundname) {

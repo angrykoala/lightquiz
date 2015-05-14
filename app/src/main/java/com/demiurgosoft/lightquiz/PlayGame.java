@@ -310,7 +310,7 @@ public class PlayGame extends ActionBarActivity {
         this.finish();
     }
 
-    //reloads questions from xml
+    //reloads questions from xml (old)
    /* private void reload_questions() throws IOException, XmlPullParserException {
         XmlResourceParser xmlq = getResources().getXml(R.xml.questions);
         MainActivity.generator.loadQuestions(xmlq);
@@ -340,14 +340,4 @@ public class PlayGame extends ActionBarActivity {
         }
         this.generator = new QuestionsGenerator();
     }
-
-  /*  private void loadQuestions(String genre) throws IOException {
-        SQLiteHelper database = new SQLiteHelper(this, databaseName);
-        if (!database.openDataBase()) Log.w("PlayGame", "error loading database");
-        else {
-            Cursor cursor = database.query(databaseQuery + "WHERE GENRE='" + genre + "'");
-            this.generator = new QuestionsGenerator(cursor);
-        }
-        database.close();
-    }*/
 }

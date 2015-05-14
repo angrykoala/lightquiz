@@ -38,7 +38,7 @@ public class RawQuestion {
         else if (text != null && !text.isEmpty()) return QuestionType.TEXT;
         else return null;
     }
-    //Example of loader from xml file instead of sql database
+    //Example of loader from xml file instead of sql database (not functional)
     /* public RawQuestion(XmlPullParser parser) throws XmlPullParserException, IOException {
        parser.require(XmlPullParser.START_TAG, null, "Q");
        int current = 0; //current answer to read
